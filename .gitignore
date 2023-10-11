@@ -6,3 +6,6 @@ build
 
 # Ignore VSCode config
 .vscode
+
+# Ignore bin directory with compiled files
+app/bin
