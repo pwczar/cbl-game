@@ -4,12 +4,29 @@
 
 package com.github.pwczar.cblgame;
 
+import javax.swing.JFrame;
+
+/**
+ * Main application class.
+ */
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+    private JFrame frame;
+
+    /**
+     * Initialize App and create a window.
+     */
+    App() {
+        frame = new JFrame("CBL Game");
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 600);
+        // make the window appear at the center of the screen
+        frame.setLocationRelativeTo(null);
+
+        frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        new App();
     }
 }
