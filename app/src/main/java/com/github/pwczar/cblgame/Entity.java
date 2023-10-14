@@ -9,11 +9,15 @@ public interface Entity {
     /**
      * Draw entity.
      */
-    public void draw(Graphics g);
+    default void draw(Graphics g) {
+        // Draw nothing by default
+    }
 
     /**
      * Update entity's game logic.
      * @param delta time since the last frame (in seconds)
      */
-    public void update(double delta);
+    default void update(double delta) {
+        // Do nothing by default
+    }
 }
