@@ -4,26 +4,45 @@
 
 package com.github.pwczar.cblgame;
 
-import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
 
 /**
  * Main application class.
  */
-public class App {
+public class App extends JPanel {
     private JFrame frame;
+    Game game;
 
     /**
      * Initialize App and create a window.
      */
     App() {
         frame = new JFrame("CBL Game");
+        frame.add(this);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 600);
+        frame.setSize(600, 900);
         // make the window appear at the center of the screen
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
+
+        game = new Game(this);
+        new Thread(game).start();
+    }
+
+    /**
+     * Redraw the game window.
+     */
+    public void paintComponent(Graphics g) {
+        /*
+        g.clearRect(0, 0, this.getWidth(), this.getHeight());
+        for (Entity e : drawables) {
+            e.draw(g);
+        }
+        */
+        game.draw(g);
     }
 
     public static void main(String[] args) {
