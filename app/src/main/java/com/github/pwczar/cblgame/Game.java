@@ -10,6 +10,8 @@ public class Game implements Runnable {
     private long interval = (long) (1.0 / 60 * 1000);
 
     App app;
+
+    double gravity = 10;
     Player player;
 
     /**
@@ -20,6 +22,7 @@ public class Game implements Runnable {
         this.app = app;
 
         player = new Player();
+        app.frame.addKeyListener(player);
     }
 
     /**
@@ -28,7 +31,7 @@ public class Game implements Runnable {
      */
     public void draw(Graphics g) {
         g.clearRect(0, 0, app.getWidth(), app.getHeight());
-        player.draw(g);
+        player.draw(this, g);
     }
 
     public void run() {
@@ -39,7 +42,7 @@ public class Game implements Runnable {
             double delta = (now - time) / 1000.0;
             time = now;
 
-            player.update(delta);
+            player.update(this, delta);
             app.updateUI();
 
             try {

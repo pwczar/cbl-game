@@ -11,7 +11,7 @@ import javax.swing.*;
  * Main application class.
  */
 public class App extends JPanel {
-    private JFrame frame;
+    JFrame frame;
     Game game;
 
     /**
