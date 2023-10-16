@@ -22,7 +22,7 @@ public class App extends JPanel {
         frame.add(this);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 900);
+        frame.setSize(500, 800);
         // make the window appear at the center of the screen
         frame.setLocationRelativeTo(null);
 
