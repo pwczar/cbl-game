@@ -1,6 +1,7 @@
 package com.github.pwczar.cblgame;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +15,11 @@ public class Game implements Runnable {
 
     double gravity = 10;
     Player player;
+
+    // TODO: rewrite as a class implementing Entity
+    Rectangle2D[] boundaries;
+    Rectangle2D floor;
+
     ArrayList<Block> blocks = new ArrayList<Block>();
 
     /**
@@ -24,12 +30,22 @@ public class Game implements Runnable {
         this.app = app;
 
         player = new Player();
+        app.frame.addKeyListener(player);
+
+        boundaries = new Rectangle2D[] {
+            // floor
+            new Rectangle2D.Double(0, app.frame.getHeight(), app.frame.getWidth(), 128),
+            // left boundary
+            new Rectangle2D.Double(0 - 128, 0, 128, app.frame.getHeight()),
+            // right boundary
+            new Rectangle2D.Double(app.frame.getWidth(), 0, 128, app.frame.getHeight()),
+        };
+        floor = boundaries[0];
 
         for (int i = 0; i < 5; i++) {
             Block s = new Block();
             blocks.add(s);
         }
-        app.frame.addKeyListener(player);
     }
 
     /**
@@ -37,7 +53,7 @@ public class Game implements Runnable {
      * @param g graphics context
      */
     public void draw(Graphics g) {
-        g.clearRect(0, 0, app.getWidth(), app.getHeight());
+        g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
         player.draw(this, g);
 
         for (int i = 0; i < 5; i++) {

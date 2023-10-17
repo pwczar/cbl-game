@@ -39,14 +39,14 @@ public class Block extends Rectangle2D.Double implements Entity {
      * Update the block.
      */
     public void update(Game game, double delta) {
-        if (y < 700 && !stopped) {
+        if (!stopped) {
             y += delta * vy;
-        } else {
-            stopped = true;
+            if (this.intersects(game.floor)) {
+                stopped = true;
+            }
         }
 
-        for (int i = 0; i < game.blocks.size(); i++) {
-            Block other = game.blocks.get(i);
+        for (Block other : game.blocks) {
             if (this == other) {
                 continue;
             }

@@ -57,6 +57,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             if (this.y < rect.getY()) {
                 y -= intersection.getHeight();
                 this.onFloor = true;
+                vy = 0;
             } else {
                 y += intersection.getHeight();
             }
@@ -121,6 +122,11 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         y += delta * vy;
 
         onFloor = false;
-        // TODO: collide with the environment (blocks) from `game`
+        for (Rectangle2D boundary : game.boundaries) {
+            this.moveFromRect(boundary);
+        }
+        for (Block block : game.blocks) {
+            this.moveFromRect(block);
+        }
     }
 }
