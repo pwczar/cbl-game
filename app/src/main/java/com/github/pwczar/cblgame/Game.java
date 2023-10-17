@@ -1,6 +1,7 @@
 package com.github.pwczar.cblgame;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 /**
  * Main game logic thread.
@@ -13,6 +14,7 @@ public class Game implements Runnable {
 
     double gravity = 10;
     Player player;
+    ArrayList<Block> blocks = new ArrayList<Block>();
 
     /**
      * Initialize.
@@ -22,6 +24,11 @@ public class Game implements Runnable {
         this.app = app;
 
         player = new Player();
+
+        for (int i = 0; i < 5; i++) {
+            Block s = new Block();
+            blocks.add(s);
+        }
         app.frame.addKeyListener(player);
     }
 
@@ -32,6 +39,10 @@ public class Game implements Runnable {
     public void draw(Graphics g) {
         g.clearRect(0, 0, app.getWidth(), app.getHeight());
         player.draw(this, g);
+
+        for (int i = 0; i < 5; i++) {
+            blocks.get(i).draw(this, g);
+        }
     }
 
     public void run() {
@@ -43,6 +54,10 @@ public class Game implements Runnable {
             time = now;
 
             player.update(this, delta);
+
+            for (int i = 0; i < blocks.size(); i++) {
+                blocks.get(i).update(this, delta);
+            }
             app.updateUI();
 
             try {
