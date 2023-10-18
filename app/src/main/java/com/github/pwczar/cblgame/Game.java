@@ -3,7 +3,6 @@ package com.github.pwczar.cblgame;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Main game logic thread.
@@ -11,8 +10,6 @@ import java.util.Random;
 public class Game implements Runnable {
     // time between frames in miliseconds
     private long interval = (long) (1.0 / 60 * 1000);
-
-    static Random rand = new Random(System.currentTimeMillis());
 
     App app;
 
@@ -75,6 +72,18 @@ public class Game implements Runnable {
         }
     }
 
+    /**
+     * Update the game.
+     * @param delta time since the last update (frame)
+     */
+    public void update(double delta) {
+        player.update(this, delta);
+
+        for (Block block : blocks) {
+            block.update(this, delta);
+        }
+    }
+
     public void run() {
         long time = System.currentTimeMillis();
         while (true) {
@@ -83,11 +92,7 @@ public class Game implements Runnable {
             double delta = (now - time) / 1000.0;
             time = now;
 
-            player.update(this, delta);
-
-            for (Block block : blocks) {
-                block.update(this, delta);
-            }
+            update(delta);
             app.updateUI();
 
             try {
