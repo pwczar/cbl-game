@@ -35,18 +35,31 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     }
 
     /**
-     * Move to the closest location where we won't overlap with rect.
-     * @param rect the rectangle we want to 'escape'
+     * Create a Player object at the given point.
+     * @param x the x coordinate (player center)
+     * @param y the y coordinate (bottom of player)
      */
-    void moveFromRect(Rectangle2D rect) {
+    Player(double x, double y) {
+        // call the default constructor
+        this();
+        this.x = x - getWidth() / 2;
+        this.y = y - getHeight();
+    }
+
+    /**
+     * Handle collision with another object.
+     * @param rect the rectangle we collide with
+     */
+    void collideWith(Rectangle2D rect) {
         if (!this.intersects(rect)) {
-            // no overlap, we don't need to move
+            // no overlap - no collision, we don't need to move
             return;
         }
 
+        // get the overlapping part
         Rectangle2D intersection = this.createIntersection(rect);
 
-        // move on the axis with a smaller difference
+        // move away from rect on the axis with a smaller difference
         if (intersection.getWidth() < intersection.getHeight()) {
             if (this.x < rect.getX()) {
                 x -= intersection.getWidth();
@@ -61,6 +74,20 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             } else {
                 y += intersection.getHeight();
             }
+        }
+    }
+
+    /**
+     * Handle collision with a block.
+     * @param block the block
+     */
+    void collideWith(Block block) {
+        // System.out.println("test");
+        if (!block.stopped && block.intersects(this)
+            && block.getY() + block.getHeight() < this.y) {
+            // TODO: show a game over screen and restart the game
+        } else {
+            this.collideWith((Rectangle2D) block);
         }
     }
 
@@ -123,10 +150,10 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
         onFloor = false;
         for (Rectangle2D boundary : game.boundaries) {
-            this.moveFromRect(boundary);
+            this.collideWith(boundary);
         }
         for (Block block : game.blocks) {
-            this.moveFromRect(block);
+            this.collideWith(block);
         }
     }
 }

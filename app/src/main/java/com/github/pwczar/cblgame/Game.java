@@ -29,7 +29,7 @@ public class Game implements Runnable {
     Game(App app) {
         this.app = app;
 
-        player = new Player();
+        player = new Player(app.frame.getWidth() / 2, app.frame.getHeight());
         app.frame.addKeyListener(player);
 
         boundaries = new Rectangle2D[] {
