@@ -3,6 +3,7 @@ package com.github.pwczar.cblgame;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Main game logic thread.
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 public class Game implements Runnable {
     // time between frames in miliseconds
     private long interval = (long) (1.0 / 60 * 1000);
+
+    static Random rand = new Random(System.currentTimeMillis());
 
     App app;
 
@@ -21,6 +24,7 @@ public class Game implements Runnable {
     Rectangle2D floor;
 
     ArrayList<Block> blocks = new ArrayList<Block>();
+    Block[][] grid;
 
     /**
      * Initialize.
@@ -42,10 +46,20 @@ public class Game implements Runnable {
         };
         floor = boundaries[0];
 
-        for (int i = 0; i < 5; i++) {
-            Block s = new Block();
+        grid
+            = new Block[app.frame.getWidth() / Block.SIZE][app.frame.getHeight() / Block.SIZE];
+        for (int i = 0; i < 10; i++) {
+            Block s = new Block(this);
             blocks.add(s);
         }
+    }
+
+    int getGridWidth() {
+        return grid.length;
+    }
+
+    int getGridHeight() {
+        return grid[0].length;
     }
 
     /**
@@ -56,8 +70,8 @@ public class Game implements Runnable {
         g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
         player.draw(this, g);
 
-        for (int i = 0; i < 5; i++) {
-            blocks.get(i).draw(this, g);
+        for (Block block : blocks) {
+            block.draw(this, g);
         }
     }
 
@@ -71,8 +85,8 @@ public class Game implements Runnable {
 
             player.update(this, delta);
 
-            for (int i = 0; i < blocks.size(); i++) {
-                blocks.get(i).update(this, delta);
+            for (Block block : blocks) {
+                block.update(this, delta);
             }
             app.updateUI();
 

@@ -28,10 +28,10 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
      * Initialize a Player object.
      */
     Player() {
-        x = 25;
-        y = 25;
-        width = 64;
-        height = 64;
+        x = 0;
+        y = 0;
+        width = 24;
+        height = 32;
     }
 
     /**

@@ -10,21 +10,54 @@ import java.util.Random;
  * and stacking at the bottom.
  */
 public class Block extends Rectangle2D.Double implements Entity {
+    static Random rand = new Random(System.currentTimeMillis());
+    static final int SIZE = 32;
+
     boolean stopped;
     double vy;
-    static Random rand = new Random(System.currentTimeMillis());
-
 
     /**
      * Initialize a Block object.
      */
     Block() {
-        x = rand.nextInt(7) * 64;
-        y = 25;
-        vy = rand.nextInt(50) + 100;
-        width = 64;
-        height = 64;
+        x = 0;
+        y = 0;
+        vy = 200;
+        width = SIZE;
+        height = SIZE;
         stopped = false;
+    }
+
+    /**
+     * Initialize a Block object with a randomized
+     * position dependent on game's grid size.
+     * @param game game
+     */
+    Block(Game game) {
+        this();
+        x = rand.nextInt(game.getGridWidth()) * SIZE;
+        y = 0;
+    }
+
+    /**
+     * Stop the block and put it on game's grid.
+     * @param game game
+     */
+    public void putOnGrid(Game game) {
+        int col = (int) (x / SIZE);
+        int row = game.getGridHeight() - 1;
+
+        while (game.grid[col][row] != null) {
+            row--;
+            if (row < 0) {
+                // TODO: game over?
+                return;
+            }
+        }
+        game.grid[col][row] = this;
+        stopped = true;
+        x = col * SIZE;
+        y = row * SIZE;
     }
 
     /**
@@ -42,7 +75,7 @@ public class Block extends Rectangle2D.Double implements Entity {
         if (!stopped) {
             y += delta * vy;
             if (this.intersects(game.floor)) {
-                stopped = true;
+                putOnGrid(game);
             }
         }
 
@@ -52,6 +85,7 @@ public class Block extends Rectangle2D.Double implements Entity {
             }
             if (this.intersects(other) && other.stopped) {
                 this.y = other.y - this.height;
+                putOnGrid(game);
             }
         }
 
