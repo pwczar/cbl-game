@@ -30,7 +30,7 @@ public class Game implements Runnable {
     Game(App app) {
         this.app = app;
 
-        player = new Player(app.frame.getWidth() / 2, app.frame.getHeight());
+        player = new Player(this, app.frame.getWidth() / 2, app.frame.getHeight());
         app.frame.addKeyListener(player);
 
         boundaries = new Rectangle2D[] {
@@ -65,10 +65,10 @@ public class Game implements Runnable {
      */
     public void draw(Graphics g) {
         g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
-        player.draw(this, g);
+        player.draw(g);
 
         for (Block block : blocks) {
-            block.draw(this, g);
+            block.draw(g);
         }
     }
 
@@ -77,10 +77,10 @@ public class Game implements Runnable {
      * @param delta time since the last update (frame)
      */
     public void update(double delta) {
-        player.update(this, delta);
+        player.update(delta);
 
         for (Block block : blocks) {
-            block.update(this, delta);
+            block.update(delta);
         }
     }
 

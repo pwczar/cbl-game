@@ -13,14 +13,17 @@ public class Block extends Rectangle2D.Double implements Entity {
     static Random rand = new Random(System.currentTimeMillis());
     static final int SIZE = 32;
 
+    Game game;
+
     boolean stopped;
     double vy;
 
     /**
      * Initialize a Block object.
      */
-    Block() {
-        x = 0;
+    Block(Game game) {
+        this.game = game;
+        x = rand.nextInt(game.getGridWidth()) * SIZE;
         y = 0;
         vy = 200;
         width = SIZE;
@@ -29,21 +32,9 @@ public class Block extends Rectangle2D.Double implements Entity {
     }
 
     /**
-     * Initialize a Block object with a randomized
-     * position dependent on game's grid size.
-     * @param game game
-     */
-    Block(Game game) {
-        this();
-        x = rand.nextInt(game.getGridWidth()) * SIZE;
-        y = 0;
-    }
-
-    /**
      * Stop the block and put it on game's grid.
-     * @param game game
      */
-    public void putOnGrid(Game game) {
+    public void putOnGrid() {
         int col = (int) (x / SIZE);
         int row = game.getGridHeight() - 1;
 
@@ -63,7 +54,7 @@ public class Block extends Rectangle2D.Double implements Entity {
     /**
      * Draw the block at its current position.
      */
-    public void draw(Game game, Graphics g) {
+    public void draw(Graphics g) {
         g.setColor(new Color(100, 50, 200));
         g.fillRect((int) x, (int) y, (int) width, (int) height);
     }
@@ -71,11 +62,11 @@ public class Block extends Rectangle2D.Double implements Entity {
     /**
      * Update the block.
      */
-    public void update(Game game, double delta) {
+    public void update(double delta) {
         if (!stopped) {
             y += delta * vy;
             if (this.intersects(game.floor)) {
-                putOnGrid(game);
+                putOnGrid();
             }
         }
 
@@ -83,9 +74,11 @@ public class Block extends Rectangle2D.Double implements Entity {
             if (this == other) {
                 continue;
             }
-            if (this.intersects(other) && other.stopped) {
+            if (this.intersects(other)) {
                 this.y = other.y - this.height;
-                putOnGrid(game);
+                if (other.stopped) {
+                    putOnGrid();
+                }
             }
         }
 

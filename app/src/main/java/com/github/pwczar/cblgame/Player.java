@@ -10,6 +10,8 @@ import java.awt.geom.Rectangle2D;
  * The class representing the player character.
  */
 public class Player extends Rectangle2D.Double implements Entity, KeyListener {
+    Game game;
+
     double vx = 0;
     double vy = 0;
 
@@ -27,7 +29,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     /**
      * Initialize a Player object.
      */
-    Player() {
+    Player(Game game) {
+        this.game = game;
         x = 0;
         y = 0;
         width = 24;
@@ -39,9 +42,9 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
      * @param x the x coordinate (player center)
      * @param y the y coordinate (bottom of player)
      */
-    Player(double x, double y) {
+    Player(Game game, double x, double y) {
         // call the default constructor
-        this();
+        this(game);
         this.x = x - getWidth() / 2;
         this.y = y - getHeight();
     }
@@ -123,7 +126,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     /**
      * Draw the player at their current position.
      */
-    public void draw(Game game, Graphics g) {
+    public void draw(Graphics g) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect((int) x, (int) y, (int) width, (int) height);
     }
@@ -131,7 +134,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     /**
      * Update the player character.
      */
-    public void update(Game game, double delta) {
+    public void update(double delta) {
         // gravitational acceleration
         vy += game.gravity * mass * delta;
 
