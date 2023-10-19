@@ -20,6 +20,7 @@ public class Game implements Scene {
     Rectangle2D[] boundaries;
     Rectangle2D floor;
 
+    BlockFactory blockFactory;
     ArrayList<Block> blocks = new ArrayList<Block>();
     Block[][] grid;
 
@@ -43,11 +44,12 @@ public class Game implements Scene {
         };
         floor = boundaries[0];
 
+        blockFactory = new BlockFactory(this);
         grid
             = new Block[app.frame.getWidth() / Block.SIZE][app.frame.getHeight() / Block.SIZE];
         for (int i = 0; i < 10; i++) {
-            Block s = new Block(this);
-            blocks.add(s);
+            Block block = blockFactory.createBlock();
+            blocks.add(block);
         }
     }
 

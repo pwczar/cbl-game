@@ -17,14 +17,16 @@ public class Block extends Rectangle2D.Double implements Entity {
 
     boolean stopped;
     double vy;
+    Color color;
 
     /**
      * Initialize a Block object.
      */
-    Block(Game game) {
+    Block(Game game, double x, double y, Color color) {
         this.game = game;
-        x = rand.nextInt(game.getGridWidth()) * SIZE;
-        y = 0;
+        this.x = x;
+        this.y = y;
+        this.color = color;
         vy = 200;
         width = SIZE;
         height = SIZE;
@@ -70,18 +72,15 @@ public class Block extends Rectangle2D.Double implements Entity {
             }
         }
 
-        for (Block other : game.blocks) {
-            if (this == other) {
-                continue;
-            }
-            if (this.intersects(other)) {
-                this.y = other.y - this.height;
-                if (other.stopped) {
-                    putOnGrid();
+        game.blocks.stream()
+            .filter((Block block) -> (block != this))
+            .forEach((Block block) -> {
+                if (this.intersects(block)) {
+                    this.y = block.y - this.height;
+                    if (block.stopped) {
+                        putOnGrid();
+                    }
                 }
-            }
-        }
-
+            });
     }
-
 }
