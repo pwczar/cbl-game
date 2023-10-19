@@ -3,11 +3,18 @@ package com.github.pwczar.cblgame;
 import java.awt.Color;
 import java.util.Random;
 
+/**
+ * A Block factory.
+ */
 public class BlockFactory {
     Game game;
     Random rand;
     Color colors[];
 
+    /**
+     * Initialize BlockFactory.
+     * @param game game
+     */
     BlockFactory(Game game) {
         this.game = game;
         this.rand = new Random(System.currentTimeMillis());
@@ -16,6 +23,10 @@ public class BlockFactory {
         };
     }
 
+    /**
+     * Create a new Block.
+     * @return the new block
+     */
     Block createBlock() {
         Block block = new Block(
             this.game,
