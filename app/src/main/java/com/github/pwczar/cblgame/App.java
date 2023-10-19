@@ -35,7 +35,9 @@ public class App extends JPanel {
      * @param scene scene
      */
     void setScene(Scene scene) {
-        this.sceneThread.interrupt();
+        if (this.sceneThread != null) {
+            this.sceneThread.interrupt();
+        }
 
         this.scene = scene;
         this.sceneThread = new Thread(this.scene);
@@ -52,7 +54,9 @@ public class App extends JPanel {
             e.draw(g);
         }
         */
-        scene.draw(g);
+        if (scene != null) {
+            scene.draw(g);
+        }
     }
 
     public static void main(String[] args) {
