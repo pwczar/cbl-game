@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Main game logic thread.
  */
-public class Game implements Runnable {
+public class Game implements Scene {
     // time between frames in miliseconds
     private long interval = (long) (1.0 / 60 * 1000);
 

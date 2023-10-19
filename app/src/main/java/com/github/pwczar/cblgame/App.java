@@ -12,7 +12,8 @@ import javax.swing.*;
  */
 public class App extends JPanel {
     JFrame frame;
-    Game game;
+    private Scene scene;
+    private Thread sceneThread;
 
     /**
      * Initialize App and create a window.
@@ -27,9 +28,18 @@ public class App extends JPanel {
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
+    }
 
-        game = new Game(this);
-        new Thread(game).start();
+    /**
+     * Change current scene.
+     * @param scene scene
+     */
+    void setScene(Scene scene) {
+        this.sceneThread.interrupt();
+
+        this.scene = scene;
+        this.sceneThread = new Thread(this.scene);
+        this.sceneThread.start();
     }
 
     /**
@@ -42,10 +52,11 @@ public class App extends JPanel {
             e.draw(g);
         }
         */
-        game.draw(g);
+        scene.draw(g);
     }
 
     public static void main(String[] args) {
-        new App();
+        App app = new App();
+        app.setScene(new Game(app));
     }
 }
