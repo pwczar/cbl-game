@@ -1,7 +1,10 @@
 package com.github.pwczar.cblgame;
 
 import java.awt.Color;
+import java.util.ConcurrentModificationException;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A Block factory.
@@ -9,7 +12,12 @@ import java.util.Random;
 public class BlockFactory {
     Game game;
     Random rand;
-    Color colors[];
+
+    Color[] colors;
+
+    Timer spawnTimer;
+    // time between block-spanws (in seconds)
+    long spawnInterval = 2;
 
     /**
      * Initialize BlockFactory.
@@ -36,5 +44,50 @@ public class BlockFactory {
         );
 
         return block;
+    }
+
+    /**
+     * Create a new Block, add it to the game, and return it.
+     * @return the new block
+     */
+    Block spawnBlock() {
+        Block block = createBlock();
+        game.blocks.add(block);
+        return block;
+    }
+
+    /**
+     * Start spawning blocks periodically.
+     */
+    void start() {
+        spawnTimer = new Timer(true);
+        spawnTimer.schedule(new TimerTask() {
+            public void run() {
+                while (true) {
+                    double delay = spawnInterval;
+                    try {
+                        spawnBlock();
+                    } catch (ConcurrentModificationException e) {
+                        // try again in a moment
+                        delay = 0.01;
+                    }
+
+                    try {
+                        Thread.sleep((long) (delay * 1000));
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                }
+            }
+        }, spawnInterval);
+    }
+
+    /**
+     * Stop periodically spawning blocks.
+     */
+    void stop() {
+        if (spawnTimer != null) {
+            spawnTimer.cancel();
+        }
     }
 }

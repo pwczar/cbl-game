@@ -47,10 +47,7 @@ public class Game implements Scene {
         blockFactory = new BlockFactory(this);
         grid
             = new Block[app.frame.getWidth() / Block.SIZE][app.frame.getHeight() / Block.SIZE];
-        for (int i = 0; i < 10; i++) {
-            Block block = blockFactory.createBlock();
-            blocks.add(block);
-        }
+        blockFactory.start();
     }
 
     int getGridWidth() {
@@ -101,6 +98,7 @@ public class Game implements Scene {
                 Thread.sleep(interval);
             } catch (InterruptedException e) {
                 // TODO: handle exit?
+                blockFactory.stop();
             }
         }
     }
