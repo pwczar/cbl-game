@@ -61,6 +61,9 @@ public class App extends JPanel {
 
     public static void main(String[] args) {
         App app = new App();
-        app.setScene(new Game(app));
+        app.setScene(new Menu(app));
+
+        //TODO: Change scenes?
+        //app.setScene(new Game(app));
     }
 }
