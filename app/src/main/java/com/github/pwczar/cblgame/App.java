@@ -42,6 +42,12 @@ public class App extends JPanel {
             this.scene.stop();
         }
 
+        for (var c : frame.getContentPane().getComponents()) {
+            if (c != this) {
+                frame.getContentPane().remove(c);
+            }
+        }
+
         this.scene = scene;
         this.scene.run();
     }
