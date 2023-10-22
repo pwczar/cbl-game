@@ -17,6 +17,7 @@ public class BlockGrid {
         blocks = new ArrayList<>();
         grid
             = new Block[width][height];
+        factory = new BlockFactory(game, this);
     }
 
     public int getWidth() {

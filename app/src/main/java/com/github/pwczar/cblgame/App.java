@@ -4,8 +4,9 @@
 
 package com.github.pwczar.cblgame;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Graphics;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * Main application class.
@@ -13,7 +14,9 @@ import javax.swing.*;
 public class App extends JPanel {
     JFrame frame;
     private Scene scene;
-    private Thread sceneThread;
+
+    // time between frames in miliseconds
+    private long interval = (long) (1.0 / 60 * 1000);
 
     /**
      * Initialize App and create a window.
@@ -34,14 +37,13 @@ public class App extends JPanel {
      * Change current scene.
      * @param scene scene
      */
-    void setScene(Scene scene) {
-        if (this.sceneThread != null) {
-            this.sceneThread.interrupt();
+    synchronized void setScene(Scene scene) {
+        if (this.scene != null) {
+            this.scene.stop();
         }
 
         this.scene = scene;
-        this.sceneThread = new Thread(this.scene);
-        this.sceneThread.start();
+        this.scene.run();
     }
 
     /**
@@ -62,5 +64,29 @@ public class App extends JPanel {
     public static void main(String[] args) {
         App app = new App();
         app.setScene(new Game(app));
+
+        // periodically update the scene in another thread
+        new Thread() {
+            public void run() {
+                long time = System.currentTimeMillis();
+                while (true) {
+                    long now = System.currentTimeMillis();
+                    // time between now and the last frame
+                    double delta = (now - time) / 1000.0;
+                    time = now;
+
+                    if (app.scene != null) {
+                        app.scene.update(delta);
+                    }
+                    app.updateUI();
+
+                    try {
+                        Thread.sleep(app.interval);
+                    } catch (InterruptedException e) {
+                        app.scene.stop();
+                    }
+                }
+            }
+        }.start();
     }
 }

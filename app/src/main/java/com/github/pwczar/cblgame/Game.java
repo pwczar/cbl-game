@@ -2,15 +2,11 @@ package com.github.pwczar.cblgame;
 
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 /**
  * Main game logic thread.
  */
 public class Game implements Scene {
-    // time between frames in miliseconds
-    private long interval = (long) (1.0 / 60 * 1000);
-
     App app;
 
     double gravity = 10;
@@ -30,7 +26,6 @@ public class Game implements Scene {
         this.app = app;
 
         player = new Player(this, app.frame.getWidth() / 2, app.frame.getHeight());
-        app.frame.addKeyListener(player);
 
         boundaries = new Rectangle2D[] {
             // floor
@@ -73,22 +68,11 @@ public class Game implements Scene {
     }
 
     public void run() {
-        long time = System.currentTimeMillis();
-        while (true) {
-            long now = System.currentTimeMillis();
-            // time between now and the last frame
-            double delta = (now - time) / 1000.0;
-            time = now;
+        app.frame.addKeyListener(player);
+        grid.startSpawning();
+    }
 
-            update(delta);
-            app.updateUI();
-
-            try {
-                Thread.sleep(interval);
-            } catch (InterruptedException e) {
-                // TODO: handle exit?
-                grid.stopSpawning();
-            }
-        }
+    public void stop() {
+        grid.stopSpawning();
     }
 }

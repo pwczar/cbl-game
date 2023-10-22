@@ -7,4 +7,10 @@ import java.awt.Graphics;
  */
 public interface Scene extends Runnable {
     void draw(Graphics g);
+
+    void update(double delta);
+
+    default void stop() {
+
+    }
 }
