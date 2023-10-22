@@ -38,16 +38,16 @@ public class Block extends Rectangle2D.Double implements Entity {
      */
     public void putOnGrid() {
         int col = (int) (x / SIZE);
-        int row = game.getGridHeight() - 1;
+        int row = game.grid.getHeight() - 1;
 
-        while (game.grid[col][row] != null) {
+        while (game.grid.grid[col][row] != null) {
             row--;
             if (row < 0) {
                 // TODO: game over?
                 return;
             }
         }
-        game.grid[col][row] = this;
+        game.grid.grid[col][row] = this;
         stopped = true;
         x = col * SIZE;
         y = row * SIZE;
@@ -72,7 +72,7 @@ public class Block extends Rectangle2D.Double implements Entity {
             }
         }
 
-        game.blocks.stream()
+        game.grid.blocks.stream()
             .filter((Block block) -> (block != this))
             .forEach((Block block) -> {
                 if (this.intersects(block)) {

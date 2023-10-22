@@ -20,9 +20,7 @@ public class Game implements Scene {
     Rectangle2D[] boundaries;
     Rectangle2D floor;
 
-    BlockFactory blockFactory;
-    ArrayList<Block> blocks = new ArrayList<Block>();
-    Block[][] grid;
+    BlockGrid grid;
 
     /**
      * Initialize.
@@ -44,18 +42,11 @@ public class Game implements Scene {
         };
         floor = boundaries[0];
 
-        blockFactory = new BlockFactory(this);
-        grid
-            = new Block[app.frame.getWidth() / Block.SIZE][app.frame.getHeight() / Block.SIZE];
-        blockFactory.start();
-    }
-
-    int getGridWidth() {
-        return grid.length;
-    }
-
-    int getGridHeight() {
-        return grid[0].length;
+        grid = new BlockGrid(
+            this,
+            app.frame.getWidth() / Block.SIZE,
+            app.frame.getHeight() / Block.SIZE
+        );
     }
 
     /**
@@ -66,9 +57,7 @@ public class Game implements Scene {
         g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
         player.draw(g);
 
-        for (Block block : blocks) {
-            block.draw(g);
-        }
+        grid.draw(g);
     }
 
     /**
@@ -78,7 +67,7 @@ public class Game implements Scene {
     public void update(double delta) {
         player.update(delta);
 
-        for (Block block : blocks) {
+        for (Block block : grid.blocks) {
             block.update(delta);
         }
     }
@@ -98,7 +87,7 @@ public class Game implements Scene {
                 Thread.sleep(interval);
             } catch (InterruptedException e) {
                 // TODO: handle exit?
-                blockFactory.stop();
+                grid.stopSpawning();
             }
         }
     }

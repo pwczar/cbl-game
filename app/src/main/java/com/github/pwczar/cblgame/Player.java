@@ -155,7 +155,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         for (Rectangle2D boundary : game.boundaries) {
             this.collideWith(boundary);
         }
-        for (Block block : game.blocks) {
+        for (Block block : game.grid.getBlocks()) {
             this.collideWith(block);
         }
     }

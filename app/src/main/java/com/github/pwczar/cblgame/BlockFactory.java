@@ -11,6 +11,7 @@ import java.util.TimerTask;
  */
 public class BlockFactory {
     Game game;
+    BlockGrid grid;
     Random rand;
 
     Color[] colors;
@@ -22,9 +23,11 @@ public class BlockFactory {
     /**
      * Initialize BlockFactory.
      * @param game game
+     * @param grid block grid
      */
-    BlockFactory(Game game) {
+    BlockFactory(Game game, BlockGrid grid) {
         this.game = game;
+        this.grid = grid;
         this.rand = new Random(System.currentTimeMillis());
         this.colors = new Color[] {
             new Color(100, 50, 200)
@@ -38,7 +41,7 @@ public class BlockFactory {
     Block createBlock() {
         Block block = new Block(
             this.game,
-            rand.nextInt(game.getGridWidth()) * Block.SIZE,
+            rand.nextInt(grid.getWidth()) * Block.SIZE,
             0,
             this.colors[rand.nextInt(colors.length)]
         );
@@ -52,7 +55,7 @@ public class BlockFactory {
      */
     Block spawnBlock() {
         Block block = createBlock();
-        game.blocks.add(block);
+        grid.blocks.add(block);
         return block;
     }
 
