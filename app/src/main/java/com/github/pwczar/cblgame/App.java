@@ -63,7 +63,7 @@ public class App extends JPanel {
 
     public static void main(String[] args) {
         App app = new App();
-        app.setScene(new Game(app));
+        app.setScene(new Menu(app));
 
         // periodically update the scene in another thread
         new Thread() {
