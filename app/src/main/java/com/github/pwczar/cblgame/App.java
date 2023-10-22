@@ -50,6 +50,7 @@ public class App extends JPanel {
 
         this.scene = scene;
         this.scene.run();
+        frame.requestFocus();
     }
 
     /**
