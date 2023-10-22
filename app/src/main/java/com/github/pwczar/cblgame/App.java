@@ -13,7 +13,7 @@ import javax.swing.*;
 public class App extends JPanel {
     JFrame frame;
     private Scene scene;
-    private Thread sceneThread;
+    private static Thread sceneThread;
 
     /**
      * Initialize App and create a window.
@@ -63,7 +63,7 @@ public class App extends JPanel {
         App app = new App();
         app.setScene(new Menu(app));
 
+
         //TODO: Change scenes?
-        //app.setScene(new Game(app));
     }
 }

@@ -8,7 +8,7 @@ import javax.swing.*;
 public class Menu implements Scene {
     App app;
 
-    ImageIcon background = new ImageIcon("AABackground");
+    ImageIcon background = new ImageIcon("AABackground.jpg");
     JLabel image = new JLabel("", background, JLabel.CENTER);
     //TODO: Add background behind button
 
@@ -20,17 +20,20 @@ public class Menu implements Scene {
 
     public void draw(Graphics g) {
         g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
-        app.frame.add(image);
     }
 
     public void run() {
+        app.frame.add(image);
         app.frame.add(startButton, BorderLayout.NORTH);
         app.updateUI();
 
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                app.frame.remove(startButton);
                 Thread.currentThread().interrupt();
+                app.setScene(new Game(app));
+                return;
             }
         });
 }
