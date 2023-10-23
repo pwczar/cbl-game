@@ -10,6 +10,9 @@ public interface Scene extends Runnable {
 
     void update(double delta);
 
+    /**
+     * Do the scene's cleanup.
+     */
     default void stop() {
 
     }

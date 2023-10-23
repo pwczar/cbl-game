@@ -69,7 +69,11 @@ public class Game implements Scene {
         grid.startSpawning();
     }
 
+    /**
+     * Clean up after game.
+     */
     public void stop() {
+        app.frame.removeKeyListener(player);
         grid.stopSpawning();
     }
 }
