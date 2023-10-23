@@ -23,6 +23,9 @@ public class Menu implements Scene {
         app.frame.add(image);
     }
 
+    public void update(double delta) {
+    }
+
     public void run() {
         app.frame.add(startButton, BorderLayout.NORTH);
         app.updateUI();
