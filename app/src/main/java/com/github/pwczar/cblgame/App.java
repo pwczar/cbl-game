@@ -60,6 +60,15 @@ public class App extends JPanel {
         if (scene != null) {
             scene.draw(g);
         }
+
+        // we paint all components ourselves again,
+        // so that scene can clear the screen
+        // and use primitive drawing operations
+        for (var c : this.frame.getContentPane().getComponents()) {
+            if (c != this) {
+                c.paint(g);
+            }
+        }
     }
 
     public static void main(String[] args) {
