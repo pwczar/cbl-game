@@ -42,12 +42,7 @@ public class App extends JPanel {
             this.scene.stop();
         }
 
-        for (var c : frame.getContentPane().getComponents()) {
-            if (c != this) {
-                System.out.println(c);
-                frame.getContentPane().remove(c);
-            }
-        }
+        this.removeAll();
 
         this.scene = scene;
         this.scene.run();
@@ -60,15 +55,6 @@ public class App extends JPanel {
     public void paintComponent(Graphics g) {
         if (scene != null) {
             scene.draw(g);
-        }
-
-        // we paint all components ourselves again,
-        // so that scene can clear the screen
-        // and use primitive drawing operations
-        for (var c : this.frame.getContentPane().getComponents()) {
-            if (c != this) {
-                c.paint(g);
-            }
         }
     }
 

@@ -19,9 +19,8 @@ public class Controls implements Scene {
     }
 
     public void run() {
-        app.frame.add(howtoplay, BorderLayout.CENTER);
-        app.frame.add(back, BorderLayout.SOUTH);
-        app.updateUI();
+        app.add(howtoplay, BorderLayout.CENTER);
+        app.add(back, BorderLayout.SOUTH);
 
         back.addActionListener(new ActionListener() {
             @Override
