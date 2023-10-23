@@ -6,9 +6,7 @@ import java.awt.geom.Rectangle2D;
 /**
  * Main game logic thread.
  */
-public class Game implements Scene {
-    final App app;
-
+public class Game extends Scene {
     double gravity = 10;
     Player player;
 
@@ -23,24 +21,24 @@ public class Game implements Scene {
      * @param app the app to run under
      */
     Game(App app) {
-        this.app = app;
+        super(app);
 
-        player = new Player(this, app.frame.getWidth() / 2, app.frame.getHeight());
+        player = new Player(this, app.getWidth() / 2, app.getHeight());
 
         boundaries = new Rectangle2D[] {
             // floor
-            new Rectangle2D.Double(0, app.frame.getHeight(), app.frame.getWidth(), 128),
+            new Rectangle2D.Double(0, app.getHeight(), app.getWidth(), 128),
             // left boundary
-            new Rectangle2D.Double(0 - 128, 0, 128, app.frame.getHeight()),
+            new Rectangle2D.Double(0 - 128, 0, 128, app.getHeight()),
             // right boundary
-            new Rectangle2D.Double(app.frame.getWidth(), 0, 128, app.frame.getHeight()),
+            new Rectangle2D.Double(app.getWidth(), 0, 128, app.getHeight()),
         };
         floor = boundaries[0];
 
         grid = new BlockGrid(
             this,
-            app.frame.getWidth() / Block.SIZE,
-            app.frame.getHeight() / Block.SIZE
+            app.getWidth() / Block.SIZE,
+            app.getHeight() / Block.SIZE
         );
     }
 
@@ -49,7 +47,7 @@ public class Game implements Scene {
      * @param g graphics context
      */
     public void draw(Graphics g) {
-        g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
+        g.clearRect(0, 0, app.getWidth(), app.getHeight());
         player.draw(g);
 
         grid.draw(g);
@@ -65,15 +63,15 @@ public class Game implements Scene {
     }
 
     public void run() {
-        app.frame.addKeyListener(player);
+        app.addKeyListener(player);
         grid.startSpawning();
     }
 
     /**
      * Clean up after game.
      */
-    public void stop() {
-        app.frame.removeKeyListener(player);
+    public void exit() {
+        app.removeKeyListener(player);
         grid.stopSpawning();
     }
 }

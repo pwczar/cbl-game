@@ -4,9 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Menu implements Scene {
-    App app;
-
+public class Menu extends Scene {
     ImageIcon background = new ImageIcon("AABackground.jpg");
     Image image = background.getImage().getScaledInstance(500, 800, Image.SCALE_SMOOTH);
     JLabel imageLabel;
@@ -17,11 +15,11 @@ public class Menu implements Scene {
     JButton controlsButton = new JButton("Controls");
 
     Menu(App app) {
-        this.app = app;
+        super(app);
     }
 
     public void draw(Graphics g) {
-        g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
+        g.clearRect(0, 0, app.getWidth(), app.getHeight());
     }
 
     public void update(double delta) {
@@ -33,8 +31,8 @@ public class Menu implements Scene {
         imageLabel = new JLabel("", background, JLabel.CENTER);
         app.frame.add(imageLabel, BorderLayout.CENTER);
         */
-        app.add(startButton, BorderLayout.NORTH);
-        app.add(controlsButton, BorderLayout.SOUTH);
+        add(startButton);
+        add(controlsButton);
 
         startButton.addActionListener(new ActionListener() {
             @Override

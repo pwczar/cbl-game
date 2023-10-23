@@ -1,26 +1,24 @@
 package com.github.pwczar.cblgame;
 
-import java.awt.*;
 import java.awt.Graphics;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Controls implements Scene {
-    App app;
+public class Controls extends Scene {
     JButton back = new JButton("BACK");
     JTextField howtoplay = new JTextField("HERE SHOULD BE CONTROLS EXPLAINED");
 
     Controls(App app) {
-        this.app = app;
+        super(app);
     }
 
     public void draw(Graphics g) {
-        g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
+        g.clearRect(0, 0, app.getWidth(), app.getHeight());
     }
 
     public void run() {
-        app.add(howtoplay, BorderLayout.CENTER);
-        app.add(back, BorderLayout.SOUTH);
+        add(howtoplay);
+        add(back);
 
         back.addActionListener(new ActionListener() {
             @Override
@@ -29,10 +27,5 @@ public class Controls implements Scene {
                 return;
             }
         });
-
-
-    }
-
-    public void update(double delta) {
     }
 }

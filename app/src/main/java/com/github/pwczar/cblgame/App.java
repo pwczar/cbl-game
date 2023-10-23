@@ -4,15 +4,12 @@
 
 package com.github.pwczar.cblgame;
 
-import java.awt.Graphics;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
  * Main application class.
  */
-public class App extends JPanel {
-    final JFrame frame;
+public class App extends JFrame {
     private Scene scene;
 
     // time between frames in miliseconds
@@ -21,16 +18,15 @@ public class App extends JPanel {
     /**
      * Initialize App and create a window.
      */
-    App() {
-        frame = new JFrame("CBL Game");
-        frame.add(this);
+    App(String title) {
+        super(title);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 800);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 800);
         // make the window appear at the center of the screen
-        frame.setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
 
-        frame.setVisible(true);
+        setVisible(true);
     }
 
     /**
@@ -39,27 +35,19 @@ public class App extends JPanel {
      */
     synchronized void setScene(Scene scene) {
         if (this.scene != null) {
-            this.scene.stop();
+            this.scene.exit();
         }
 
-        this.removeAll();
+        getContentPane().removeAll();
 
         this.scene = scene;
         this.scene.run();
-        frame.requestFocus();
-    }
-
-    /**
-     * Redraw the game window.
-     */
-    public void paintComponent(Graphics g) {
-        if (scene != null) {
-            scene.draw(g);
-        }
+        this.add(this.scene);
+        requestFocus();
     }
 
     public static void main(String[] args) {
-        App app = new App();
+        App app = new App("CBL Game");
         app.setScene(new Menu(app));
 
 
@@ -76,12 +64,12 @@ public class App extends JPanel {
                     if (app.scene != null) {
                         app.scene.update(delta);
                     }
-                    app.updateUI();
+                    app.scene.updateUI();
 
                     try {
                         Thread.sleep(app.interval);
                     } catch (InterruptedException e) {
-                        app.scene.stop();
+                        app.scene.exit();
                     }
                 }
             }
