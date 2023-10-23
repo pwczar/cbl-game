@@ -57,12 +57,6 @@ public class App extends JPanel {
      * Redraw the game window.
      */
     public void paintComponent(Graphics g) {
-        /*
-        g.clearRect(0, 0, this.getWidth(), this.getHeight());
-        for (Entity e : drawables) {
-            e.draw(g);
-        }
-        */
         if (scene != null) {
             scene.draw(g);
         }
