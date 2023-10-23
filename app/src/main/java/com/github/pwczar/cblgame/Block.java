@@ -13,7 +13,8 @@ public class Block extends Rectangle2D.Double implements Entity {
     static Random rand = new Random(System.currentTimeMillis());
     static final int SIZE = 32;
 
-    Game game;
+    final Game game;
+    final BlockGrid grid;
 
     boolean stopped;
     double vy;
@@ -22,8 +23,9 @@ public class Block extends Rectangle2D.Double implements Entity {
     /**
      * Initialize a Block object.
      */
-    Block(Game game, double x, double y, Color color) {
+    Block(Game game, BlockGrid grid, double x, double y, Color color) {
         this.game = game;
+        this.grid = grid;
         this.x = x;
         this.y = y;
         this.color = color;
@@ -34,23 +36,20 @@ public class Block extends Rectangle2D.Double implements Entity {
     }
 
     /**
-     * Stop the block and put it on game's grid.
+     * Stop the block and put (align) it on the grid.
      */
     public void putOnGrid() {
         int col = (int) (x / SIZE);
-        int row = game.grid.getHeight() - 1;
+        int row = grid.getHeight() - 1;
 
-        while (game.grid.grid[col][row] != null) {
+        while (grid.getBlockAt(col, row) != null) {
             row--;
             if (row < 0) {
                 // TODO: game over?
                 return;
             }
         }
-        game.grid.grid[col][row] = this;
-        stopped = true;
-        x = col * SIZE;
-        y = row * SIZE;
+        grid.putBlockAt(this, col, row);
     }
 
     /**
@@ -72,7 +71,7 @@ public class Block extends Rectangle2D.Double implements Entity {
             }
         }
 
-        game.grid.blocks.stream()
+        grid.getBlocks().stream()
             .filter((Block block) -> (block != this))
             .forEach((Block block) -> {
                 if (this.intersects(block)) {

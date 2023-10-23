@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  * Main application class.
  */
 public class App extends JPanel {
-    JFrame frame;
+    final JFrame frame;
     private Scene scene;
 
     // time between frames in miliseconds
@@ -50,18 +50,13 @@ public class App extends JPanel {
 
         this.scene = scene;
         this.scene.run();
+        frame.requestFocus();
     }
 
     /**
      * Redraw the game window.
      */
     public void paintComponent(Graphics g) {
-        /*
-        g.clearRect(0, 0, this.getWidth(), this.getHeight());
-        for (Entity e : drawables) {
-            e.draw(g);
-        }
-        */
         if (scene != null) {
             scene.draw(g);
         }

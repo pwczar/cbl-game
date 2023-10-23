@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
  * Main game logic thread.
  */
 public class Game implements Scene {
-    App app;
+    final App app;
 
     double gravity = 10;
     Player player;
@@ -61,10 +61,7 @@ public class Game implements Scene {
      */
     public void update(double delta) {
         player.update(delta);
-
-        for (Block block : grid.blocks) {
-            block.update(delta);
-        }
+        grid.update(delta);
     }
 
     public void run() {

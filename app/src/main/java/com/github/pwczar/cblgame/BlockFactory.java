@@ -10,8 +10,8 @@ import java.util.TimerTask;
  * A Block factory.
  */
 public class BlockFactory {
-    Game game;
-    BlockGrid grid;
+    final Game game;
+    final BlockGrid grid;
     Random rand;
 
     Color[] colors;
@@ -40,23 +40,21 @@ public class BlockFactory {
      */
     Block createBlock() {
         Block block = new Block(
-            this.game,
+            game,
+            grid,
             rand.nextInt(grid.getWidth()) * Block.SIZE,
             0,
-            this.colors[rand.nextInt(colors.length)]
+            colors[rand.nextInt(colors.length)]
         );
 
         return block;
     }
 
     /**
-     * Create a new Block, add it to the game, and return it.
-     * @return the new block
+     * Spawn a new Block.
      */
-    Block spawnBlock() {
-        Block block = createBlock();
-        grid.blocks.add(block);
-        return block;
+    void spawnBlock() {
+        grid.addBlock();
     }
 
     /**
