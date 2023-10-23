@@ -16,7 +16,7 @@ public abstract class Scene extends JPanel implements Runnable {
     public void draw(Graphics g) {
     }
 
-    final public void paintComponent(Graphics g) {
+    public final void paintComponent(Graphics g) {
         draw(g);
     }
 
