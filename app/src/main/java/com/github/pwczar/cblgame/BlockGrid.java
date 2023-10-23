@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
  * A grid of blocks, some of which may be unaligned.
  */
 public class BlockGrid implements Entity {
-    Game game;
+    final Game game;
     private List<Block> blocks;
     private Block[][] grid;
     private BlockFactory factory;

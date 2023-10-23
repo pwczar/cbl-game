@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  * Main application class.
  */
 public class App extends JPanel {
-    JFrame frame;
+    final JFrame frame;
     private Scene scene;
 
     // time between frames in miliseconds

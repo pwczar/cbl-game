@@ -13,8 +13,8 @@ public class Block extends Rectangle2D.Double implements Entity {
     static Random rand = new Random(System.currentTimeMillis());
     static final int SIZE = 32;
 
-    Game game;
-    BlockGrid grid;
+    final Game game;
+    final BlockGrid grid;
 
     boolean stopped;
     double vy;

@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
  * Main game logic thread.
  */
 public class Game implements Scene {
-    App app;
+    final App app;
 
     double gravity = 10;
     Player player;

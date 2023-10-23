@@ -10,8 +10,8 @@ import java.util.TimerTask;
  * A Block factory.
  */
 public class BlockFactory {
-    Game game;
-    BlockGrid grid;
+    final Game game;
+    final BlockGrid grid;
     Random rand;
 
     Color[] colors;
