@@ -61,10 +61,7 @@ public class Game implements Scene {
      */
     public void update(double delta) {
         player.update(delta);
-
-        for (Block block : grid.blocks) {
-            block.update(delta);
-        }
+        grid.update(delta);
     }
 
     public void run() {
