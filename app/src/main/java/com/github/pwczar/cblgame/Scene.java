@@ -7,4 +7,13 @@ import java.awt.Graphics;
  */
 public interface Scene extends Runnable {
     void draw(Graphics g);
+
+    void update(double delta);
+
+    /**
+     * Do the scene's cleanup.
+     */
+    default void stop() {
+
+    }
 }

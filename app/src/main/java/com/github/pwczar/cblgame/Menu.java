@@ -4,8 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper;
-
 public class Menu implements Scene {
     App app;
 
@@ -26,6 +24,9 @@ public class Menu implements Scene {
         g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
     }
 
+    public void update(double delta) {
+    }
+
     public void run() {
         /* 
         background.setImage(image);
@@ -39,8 +40,6 @@ public class Menu implements Scene {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                app.frame.remove(startButton);
-                Thread.currentThread().interrupt();
                 app.setScene(new Game(app));
                 return;
             }
@@ -49,9 +48,6 @@ public class Menu implements Scene {
         controlsButton.addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) {
-                app.frame.remove(startButton);
-                app.frame.remove(controlsButton);
-                Thread.currentThread().interrupt();
                 app.setScene(new Controls(app));
                 return;
             }

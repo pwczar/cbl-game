@@ -26,14 +26,14 @@ public class Controls implements Scene {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                app.frame.remove(howtoplay);
-                app.frame.remove(back);
-                Thread.currentThread().interrupt();
                 app.setScene(new Menu(app));
                 return;
             }
         });
 
 
+    }
+
+    public void update(double delta) {
     }
 }

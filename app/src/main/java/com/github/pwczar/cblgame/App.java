@@ -4,16 +4,19 @@
 
 package com.github.pwczar.cblgame;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Graphics;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * Main application class.
  */
 public class App extends JPanel {
-    JFrame frame;
+    final JFrame frame;
     private Scene scene;
-    private static Thread sceneThread;
+
+    // time between frames in miliseconds
+    private long interval = (long) (1.0 / 60 * 1000);
 
     /**
      * Initialize App and create a window.
@@ -34,28 +37,38 @@ public class App extends JPanel {
      * Change current scene.
      * @param scene scene
      */
-    void setScene(Scene scene) {
-        if (this.sceneThread != null) {
-            this.sceneThread.interrupt();
+    synchronized void setScene(Scene scene) {
+        if (this.scene != null) {
+            this.scene.stop();
+        }
+
+        for (var c : frame.getContentPane().getComponents()) {
+            if (c != this) {
+                System.out.println(c);
+                frame.getContentPane().remove(c);
+            }
         }
 
         this.scene = scene;
-        this.sceneThread = new Thread(this.scene);
-        this.sceneThread.start();
+        this.scene.run();
+        frame.requestFocus();
     }
 
     /**
      * Redraw the game window.
      */
     public void paintComponent(Graphics g) {
-        /*
-        g.clearRect(0, 0, this.getWidth(), this.getHeight());
-        for (Entity e : drawables) {
-            e.draw(g);
-        }
-        */
         if (scene != null) {
             scene.draw(g);
+        }
+
+        // we paint all components ourselves again,
+        // so that scene can clear the screen
+        // and use primitive drawing operations
+        for (var c : this.frame.getContentPane().getComponents()) {
+            if (c != this) {
+                c.paint(g);
+            }
         }
     }
 
@@ -64,6 +77,28 @@ public class App extends JPanel {
         app.setScene(new Menu(app));
 
 
-        //TODO: Change scenes?
+        // periodically update the scene in another thread
+        new Thread() {
+            public void run() {
+                long time = System.currentTimeMillis();
+                while (true) {
+                    long now = System.currentTimeMillis();
+                    // time between now and the last frame
+                    double delta = (now - time) / 1000.0;
+                    time = now;
+
+                    if (app.scene != null) {
+                        app.scene.update(delta);
+                    }
+                    app.updateUI();
+
+                    try {
+                        Thread.sleep(app.interval);
+                    } catch (InterruptedException e) {
+                        app.scene.stop();
+                    }
+                }
+            }
+        }.start();
     }
 }

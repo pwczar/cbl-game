@@ -13,18 +13,22 @@ public class Block extends Rectangle2D.Double implements Entity {
     static Random rand = new Random(System.currentTimeMillis());
     static final int SIZE = 32;
 
-    Game game;
+    final Game game;
+    final BlockGrid grid;
 
     boolean stopped;
     double vy;
+    Color color;
 
     /**
      * Initialize a Block object.
      */
-    Block(Game game) {
+    Block(Game game, BlockGrid grid, double x, double y, Color color) {
         this.game = game;
-        x = rand.nextInt(game.getGridWidth()) * SIZE;
-        y = 0;
+        this.grid = grid;
+        this.x = x;
+        this.y = y;
+        this.color = color;
         vy = 200;
         width = SIZE;
         height = SIZE;
@@ -32,23 +36,20 @@ public class Block extends Rectangle2D.Double implements Entity {
     }
 
     /**
-     * Stop the block and put it on game's grid.
+     * Stop the block and put (align) it on the grid.
      */
     public void putOnGrid() {
         int col = (int) (x / SIZE);
-        int row = game.getGridHeight() - 1;
+        int row = grid.getHeight() - 1;
 
-        while (game.grid[col][row] != null) {
+        while (grid.getBlockAt(col, row) != null) {
             row--;
             if (row < 0) {
                 // TODO: game over?
                 return;
             }
         }
-        game.grid[col][row] = this;
-        stopped = true;
-        x = col * SIZE;
-        y = row * SIZE;
+        grid.putBlockAt(this, col, row);
     }
 
     /**
@@ -70,18 +71,15 @@ public class Block extends Rectangle2D.Double implements Entity {
             }
         }
 
-        for (Block other : game.blocks) {
-            if (this == other) {
-                continue;
-            }
-            if (this.intersects(other)) {
-                this.y = other.y - this.height;
-                if (other.stopped) {
-                    putOnGrid();
+        grid.getBlocks().stream()
+            .filter((Block block) -> (block != this))
+            .forEach((Block block) -> {
+                if (this.intersects(block)) {
+                    this.y = block.y - this.height;
+                    if (block.stopped) {
+                        putOnGrid();
+                    }
                 }
-            }
-        }
-
+            });
     }
-
 }

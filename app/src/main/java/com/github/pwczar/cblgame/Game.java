@@ -2,16 +2,12 @@ package com.github.pwczar.cblgame;
 
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 /**
  * Main game logic thread.
  */
 public class Game implements Scene {
-    // time between frames in miliseconds
-    private long interval = (long) (1.0 / 60 * 1000);
-
-    App app;
+    final App app;
 
     double gravity = 10;
     Player player;
@@ -20,8 +16,7 @@ public class Game implements Scene {
     Rectangle2D[] boundaries;
     Rectangle2D floor;
 
-    ArrayList<Block> blocks = new ArrayList<Block>();
-    Block[][] grid;
+    BlockGrid grid;
 
     /**
      * Initialize.
@@ -31,7 +26,6 @@ public class Game implements Scene {
         this.app = app;
 
         player = new Player(this, app.frame.getWidth() / 2, app.frame.getHeight());
-        app.frame.addKeyListener(player);
 
         boundaries = new Rectangle2D[] {
             // floor
@@ -43,20 +37,11 @@ public class Game implements Scene {
         };
         floor = boundaries[0];
 
-        grid
-            = new Block[app.frame.getWidth() / Block.SIZE][app.frame.getHeight() / Block.SIZE];
-        for (int i = 0; i < 10; i++) {
-            Block s = new Block(this);
-            blocks.add(s);
-        }
-    }
-
-    int getGridWidth() {
-        return grid.length;
-    }
-
-    int getGridHeight() {
-        return grid[0].length;
+        grid = new BlockGrid(
+            this,
+            app.frame.getWidth() / Block.SIZE,
+            app.frame.getHeight() / Block.SIZE
+        );
     }
 
     /**
@@ -67,9 +52,7 @@ public class Game implements Scene {
         g.clearRect(0, 0, app.frame.getWidth(), app.frame.getHeight());
         player.draw(g);
 
-        for (Block block : blocks) {
-            block.draw(g);
-        }
+        grid.draw(g);
     }
 
     /**
@@ -78,28 +61,19 @@ public class Game implements Scene {
      */
     public void update(double delta) {
         player.update(delta);
-
-        for (Block block : blocks) {
-            block.update(delta);
-        }
+        grid.update(delta);
     }
 
     public void run() {
-        long time = System.currentTimeMillis();
-        while (true) {
-            long now = System.currentTimeMillis();
-            // time between now and the last frame
-            double delta = (now - time) / 1000.0;
-            time = now;
+        app.frame.addKeyListener(player);
+        grid.startSpawning();
+    }
 
-            update(delta);
-            app.updateUI();
-
-            try {
-                Thread.sleep(interval);
-            } catch (InterruptedException e) {
-                // TODO: handle exit?
-            }
-        }
+    /**
+     * Clean up after game.
+     */
+    public void stop() {
+        app.frame.removeKeyListener(player);
+        grid.stopSpawning();
     }
 }
