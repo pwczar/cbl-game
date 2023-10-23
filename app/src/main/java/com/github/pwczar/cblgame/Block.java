@@ -56,7 +56,7 @@ public class Block extends Rectangle2D.Double implements Entity {
      * Draw the block at its current position.
      */
     public void draw(Graphics g) {
-        g.setColor(new Color(100, 50, 200));
+        g.setColor(color);
         g.fillRect((int) x, (int) y, (int) width, (int) height);
     }
 

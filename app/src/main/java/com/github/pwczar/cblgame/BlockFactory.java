@@ -30,7 +30,9 @@ public class BlockFactory {
         this.grid = grid;
         this.rand = new Random(System.currentTimeMillis());
         this.colors = new Color[] {
-            new Color(100, 50, 200)
+            new Color(110, 80, 220),
+            new Color(230, 100, 100),
+            new Color(100, 220, 100),
         };
     }
 
