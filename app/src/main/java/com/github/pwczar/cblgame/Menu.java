@@ -13,7 +13,7 @@ public class Menu implements Scene {
     //TODO: Add background behind button
 
     JButton startButton = new JButton("START!");
-    
+
     Menu(App app) {
         this.app = app;
     }
@@ -30,7 +30,7 @@ public class Menu implements Scene {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Thread.currentThread().interrupt();
+                app.setScene(new Game(app));
             }
         });
 }
