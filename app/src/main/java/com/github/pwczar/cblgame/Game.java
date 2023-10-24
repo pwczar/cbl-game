@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 public class Game extends Scene {
     double gravity = 10;
     Player player;
+    double gameTime = 0;
 
     // TODO: rewrite as a class implementing Entity
     Rectangle2D[] boundaries;
@@ -49,7 +50,6 @@ public class Game extends Scene {
     public void draw(Graphics g) {
         g.clearRect(0, 0, app.getWidth(), app.getHeight());
         player.draw(g);
-
         grid.draw(g);
     }
 
@@ -60,6 +60,8 @@ public class Game extends Scene {
     public void update(double delta) {
         player.update(delta);
         grid.update(delta);
+
+        gameTime += delta;
     }
 
     public void run() {
