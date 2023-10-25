@@ -137,8 +137,8 @@ public class BlockGrid implements Entity {
 
         if (tn != null && bn != null
             && tn.color == block.color && bn.color == block.color) {
-            putBlockAt(null, col, row);
             putBlockAt(null, col, row - 1);
+            putBlockAt(null, col, row);
             putBlockAt(null, col, row + 1);
             // TODO: same as horizontal
         } else if (tn != null && tn.color == block.color) {
