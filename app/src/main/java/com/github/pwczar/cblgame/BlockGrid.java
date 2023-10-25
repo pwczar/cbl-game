@@ -79,15 +79,27 @@ public class BlockGrid implements Entity {
 
         grid[col][row] = block;
         if (block == null) {
-            // block removed, nothing else to do here
+            unstackBlockAt(col, row - 1);
             return;
         }
 
         block.x = col * Block.SIZE;
         block.y = row * Block.SIZE;
-        block.stopped = true;
+        block.state = new BlockStateStacked(block);
         checkedBlocks.clear();
         evalPatternsAt(col, row);
+    }
+
+    public void unstackBlockAt(int col, int row) {
+        Block block = getBlockAt(col, row);
+        if (block == null) {
+            return;
+        }
+
+        grid[col][row] = null;
+        block.fall();
+
+        unstackBlockAt(col, row - 1);
     }
 
     /**
@@ -164,6 +176,10 @@ public class BlockGrid implements Entity {
         }
 
         for (Block block : toBeRemoved) {
+            unstackBlockAt(
+                (int) (block.x / Block.SIZE),
+                (int) (block.y / Block.SIZE)
+            );
             blocks.remove(block);
         }
         toBeRemoved.clear();

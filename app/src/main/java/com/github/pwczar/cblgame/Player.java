@@ -86,7 +86,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
      */
     void collideWith(Block block) {
         // System.out.println("test");
-        if (!block.stopped && block.intersects(this)
+        if (!(block.state instanceof BlockStateFalling)
+            && block.intersects(this)
             && block.getY() + block.getHeight() < this.y) {
             // TODO: show a game over screen and restart the game
         } else {

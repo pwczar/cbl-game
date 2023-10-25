@@ -16,8 +16,7 @@ public class Block extends Rectangle2D.Double implements Entity {
     final Game game;
     final BlockGrid grid;
 
-    boolean stopped;
-    double vy;
+    BlockState state;
     Color color;
 
     /**
@@ -29,10 +28,9 @@ public class Block extends Rectangle2D.Double implements Entity {
         this.x = x;
         this.y = y;
         this.color = color;
-        vy = 200;
         width = SIZE;
         height = SIZE;
-        stopped = false;
+        state = new BlockStateFalling(this);
     }
 
     /**
@@ -53,33 +51,28 @@ public class Block extends Rectangle2D.Double implements Entity {
     }
 
     /**
+     * Set state to BlockStateFalling and possibly remove from grid.
+     */
+    public void fall() {
+        if (state instanceof BlockStateStacked) {
+            int col = (int) (x / SIZE);
+            int row = (int) (y / SIZE);
+            // grid.putBlockAt(null, col, row);
+        }
+        state = new BlockStateFalling(this);
+    }
+
+    /**
      * Draw the block at its current position.
      */
     public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillRect((int) x, (int) y, (int) width, (int) height);
+        state.draw(g);
     }
 
     /**
      * Update the block.
      */
     public void update(double delta) {
-        if (!stopped) {
-            y += delta * vy;
-            if (this.intersects(game.floor)) {
-                putOnGrid();
-            }
-        }
-
-        grid.getBlocks().stream()
-            .filter((Block block) -> (block != this))
-            .forEach((Block block) -> {
-                if (this.intersects(block)) {
-                    this.y = block.y - this.height;
-                    if (block.stopped) {
-                        putOnGrid();
-                    }
-                }
-            });
+        state.update(delta);
     }
 }
