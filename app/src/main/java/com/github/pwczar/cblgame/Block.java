@@ -54,11 +54,6 @@ public class Block extends Rectangle2D.Double implements Entity {
      * Set state to BlockStateFalling and possibly remove from grid.
      */
     public void fall() {
-        if (state instanceof BlockStateStacked) {
-            int col = (int) (x / SIZE);
-            int row = (int) (y / SIZE);
-            // grid.putBlockAt(null, col, row);
-        }
         state = new BlockStateFalling(this);
     }
 
