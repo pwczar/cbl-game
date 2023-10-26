@@ -2,12 +2,20 @@ package com.github.pwczar.cblgame;
 
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Main game logic thread.
  */
 public class Game extends Scene {
     double gravity = 10;
+
+    private List<Entity> entities = new ArrayList<>();
+    private List<Entity> toBeAddedEntities = new ArrayList<>();
+    private List<Entity> toBeRemovedEntities = new ArrayList<>();
+
     Player player;
 
     // TODO: rewrite as a class implementing Entity
@@ -40,6 +48,35 @@ public class Game extends Scene {
             app.getWidth() / Block.SIZE,
             app.getHeight() / Block.SIZE
         );
+
+        addEntity(player);
+        addEntity(grid);
+    }
+
+    /**
+     * Add an Entity to the game.
+     * @param ent the Entity to add
+     */
+    public void addEntity(Entity ent) {
+        if (entities.indexOf(ent) != -1 || toBeAddedEntities.indexOf(ent) != -1) {
+            return;
+        }
+        toBeAddedEntities.add(ent);
+    }
+
+    /**
+     * Remvoe an Entity from the game.
+     * @param ent the Entity to remove
+     */
+    public void removeEntity(Entity ent) {
+        if (ent == player || ent == grid) {
+            throw new IllegalArgumentException("This entity cannot be removed.");
+        }
+        toBeRemovedEntities.add(ent);
+    }
+
+    public List<Entity> getEntities() {
+        return Collections.unmodifiableList(entities);
     }
 
     /**
@@ -48,9 +85,12 @@ public class Game extends Scene {
      */
     public void draw(Graphics g) {
         g.clearRect(0, 0, app.getWidth(), app.getHeight());
-        player.draw(g);
 
-        grid.draw(g);
+        for (Entity ent : entities) {
+            ent.draw(g);
+        }
+
+        player.drawUI(g);
     }
 
     /**
@@ -58,8 +98,18 @@ public class Game extends Scene {
      * @param delta time since the last update (frame)
      */
     public void update(double delta) {
-        player.update(delta);
-        grid.update(delta);
+        for (Entity ent : entities) {
+            ent.update(delta);
+        }
+
+        for (Entity ent : toBeAddedEntities) {
+            entities.add(ent);
+        }
+        toBeAddedEntities.clear();
+        for (Entity ent : toBeRemovedEntities) {
+            entities.remove(ent);
+        }
+        toBeRemovedEntities.clear();
     }
 
     public void run() {

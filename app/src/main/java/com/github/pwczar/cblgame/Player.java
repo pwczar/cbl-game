@@ -26,6 +26,10 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     // is the player currently standing on something?
     private boolean onFloor = false;
 
+    boolean facingRight = true;
+
+    Block heldBlock = null;
+
     /**
      * Initialize a Player object.
      */
@@ -96,6 +100,26 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     }
 
     /**
+     * Get the column of the currently selected place.
+     * @return the column
+     */
+    int getInteractCol() {
+        if (facingRight) {
+            return (int) ((x + width - 1) / Block.SIZE) + 1;
+        } else {
+            return (int) ((x + 1) / Block.SIZE) - 1;
+        }
+    }
+
+    /**
+     * Get the row of the currently selected place.
+     * @return the row
+     */
+    int getInteractRow() {
+        return (int) (y / Block.SIZE);
+    }
+
+    /**
      * Handle key presses for player controls.
      */
     public void keyPressed(KeyEvent e) {
@@ -106,6 +130,29 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         } else if (e.getKeyCode() == (int) ' ') {
             if (onFloor) {
                 vy = -jumpForce;
+            }
+        } else if (e.getKeyCode() == (int) 'E') {
+            int col = getInteractCol();
+            int row = getInteractRow();
+            Block block = game.grid.getBlockAt(col, row);
+            if (heldBlock == null && block != null) {
+                // pick up a Block
+                heldBlock = block;
+                game.grid.putBlockAt(null, col, row);
+            } else if (heldBlock != null && block == null
+                       && col >= 0 && col < game.grid.getWidth()
+                       && row >= 0 && row < game.grid.getHeight()) {
+                // place a Block
+                game.grid.putBlockAt(heldBlock, col, row);
+                game.grid.unstackBlockAt(col, row);
+                heldBlock = null;
+            }
+        } else if (e.getKeyCode() == (int) 'F') {
+            // throw a Block if one is held
+            if (heldBlock != null) {
+                heldBlock.state = new BlockStateThrown(heldBlock);
+                game.addEntity(heldBlock);
+                heldBlock = null;
             }
         }
     }
@@ -133,6 +180,34 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     }
 
     /**
+     * Draw player-related UI.
+     * @param g graphics context
+     */
+    public void drawUI(Graphics g) {
+        int col = getInteractCol();
+        int row = getInteractRow();
+        if (heldBlock == null) {
+            if (game.grid.getBlockAt(col, row) != null) {
+                g.setColor(new Color(255, 255, 255, 240));
+                g.drawRect(col * Block.SIZE, row * Block.SIZE, Block.SIZE - 1, Block.SIZE - 1);
+            }
+        } else {
+            heldBlock.draw(g);
+            if (game.grid.getBlockAt(col, row) == null
+                && col >= 0 && col < game.grid.getWidth()
+                && row >= 0 && row < game.grid.getHeight()) {
+                g.setColor(new Color(
+                    heldBlock.color.getRed(),
+                    heldBlock.color.getGreen(),
+                    heldBlock.color.getBlue(),
+                    190
+                ));
+                g.fillRect(col * Block.SIZE, row * Block.SIZE, Block.SIZE - 1, Block.SIZE - 1);
+            }
+        }
+    }
+
+    /**
      * Update the player character.
      */
     public void update(double delta) {
@@ -147,6 +222,12 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             moveDir++;
         }
 
+        if (moveDir > 0) {
+            facingRight = true;
+        } else if (moveDir < 0) {
+            facingRight = false;
+        }
+
         vx = moveDir * moveSpeed;
 
         x += delta * vx;
@@ -158,6 +239,11 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         }
         for (Block block : game.grid.getBlocks()) {
             this.collideWith(block);
+        }
+
+        if (heldBlock != null) {
+            heldBlock.x = x - (Block.SIZE - width) / 2;
+            heldBlock.y = y - Block.SIZE;
         }
     }
 }

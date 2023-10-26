@@ -49,6 +49,21 @@ public class BlockGrid implements Entity {
     }
 
     /**
+     * Delete a Block.
+     * @param block the block to be removed
+     */
+    public void removeBlock(Block block) {
+        if (blocks.indexOf(block) == -1) {
+            return;
+        }
+
+        if (block.state instanceof BlockStateStacked) {
+            unstackBlockAt((int) (block.x / Block.SIZE), (int) (block.y / Block.SIZE));
+        }
+        toBeRemoved.add(block);
+    }
+
+    /**
      * Get the block present at this position on the grid.
      * @param col column
      * @param row row
@@ -62,15 +77,14 @@ public class BlockGrid implements Entity {
     }
 
     /**
-     * Align the given block to the grid at given position.
-     * @param block the block to align, must be part of this BlockGrid or null to remove a block
+     * Align the given block to the grid at given position and possible add it.
+     * @param block the block
      * @param col column of grid
      * @param row row of grid
-     * @throws NoSuchElementException the given block is not part of this grid
      */
-    public void putBlockAt(Block block, int col, int row) throws NoSuchElementException {
+    public void putBlockAt(Block block, int col, int row) {
         if (block != null && blocks.indexOf(block) == -1) {
-            throw new NoSuchElementException("Block is not part of BlockGrid.");
+            blocks.add(block);
         }
 
         if (getBlockAt(col, row) != null) {
@@ -90,6 +104,11 @@ public class BlockGrid implements Entity {
         evalPatternsAt(col, row);
     }
 
+    /**
+     * Unalign a Block at the given position from the grid, i. e. make it fall.
+     * @param col column
+     * @param row row
+     */
     public void unstackBlockAt(int col, int row) {
         Block block = getBlockAt(col, row);
         if (block == null) {
