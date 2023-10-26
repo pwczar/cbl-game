@@ -28,11 +28,10 @@ public class Enemy extends Rectangle2D.Double implements Entity {
     }
 
     public void update(double delta) {
-        if(intersects(game.floor)) {
+        if (intersects(game.floor)) {
             // player loses hp
             return;
-        }
-        else {
+        } else {
             y = delta * vy;
         }
     }
