@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class Controls extends Scene {
     JButton back = new JButton("BACK");
-    JTextField howtoplay = new JTextField("HERE SHOULD BE CONTROLS EXPLAINED");
+    JLabel rules = new JLabel("RULES :)");
 
     Controls(App app) {
         super(app);
@@ -17,14 +17,13 @@ public class Controls extends Scene {
     }
 
     public void run() {
-        add(howtoplay);
+        add(rules);
         add(back);
 
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 app.setScene(new Menu(app));
-                return;
             }
         });
     }

@@ -17,12 +17,15 @@ public class Game extends Scene {
     private List<Entity> toBeRemovedEntities = new ArrayList<>();
 
     Player player;
+    double gameTime = 0;
 
     // TODO: rewrite as a class implementing Entity
     Rectangle2D[] boundaries;
     Rectangle2D floor;
 
     BlockGrid grid;
+
+    EnemyFactory enemyFactory = new EnemyFactory(this);
 
     /**
      * Initialize.
@@ -51,6 +54,10 @@ public class Game extends Scene {
 
         addEntity(player);
         addEntity(grid);
+
+        for (int i = 0; i < 5; i++) {
+            addEntity(enemyFactory.createEnemy());
+        }
     }
 
     /**
@@ -110,6 +117,8 @@ public class Game extends Scene {
             entities.remove(ent);
         }
         toBeRemovedEntities.clear();
+
+        gameTime += delta;
     }
 
     public void run() {

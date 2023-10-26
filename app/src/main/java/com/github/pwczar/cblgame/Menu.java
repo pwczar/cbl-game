@@ -38,7 +38,6 @@ public class Menu extends Scene {
             @Override
             public void actionPerformed(ActionEvent e) {
                 app.setScene(new Game(app));
-                return;
             }
         });
 
@@ -46,7 +45,6 @@ public class Menu extends Scene {
             @Override
             public void actionPerformed(ActionEvent e) {
                 app.setScene(new Controls(app));
-                return;
             }
         });
     }
