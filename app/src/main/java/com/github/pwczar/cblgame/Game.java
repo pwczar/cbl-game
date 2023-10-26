@@ -2,6 +2,8 @@ package com.github.pwczar.cblgame;
 
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main game logic thread.
@@ -16,6 +18,9 @@ public class Game extends Scene {
     Rectangle2D floor;
 
     BlockGrid grid;
+
+    EnemyFactory enemyFactory = new EnemyFactory(this);
+    List<Enemy> enemies = new ArrayList<>();
 
     /**
      * Initialize.
@@ -41,6 +46,10 @@ public class Game extends Scene {
             app.getWidth() / Block.SIZE,
             app.getHeight() / Block.SIZE
         );
+
+        for (int i = 0; i < 5; i++) {
+            enemies.add(enemyFactory.createEnemy());
+        }
     }
 
     /**
@@ -51,6 +60,10 @@ public class Game extends Scene {
         g.clearRect(0, 0, app.getWidth(), app.getHeight());
         player.draw(g);
         grid.draw(g);
+
+        for (Enemy e : enemies) {
+            e.draw(g);
+        }
     }
 
     /**
@@ -60,6 +73,10 @@ public class Game extends Scene {
     public void update(double delta) {
         player.update(delta);
         grid.update(delta);
+
+        for (Enemy e : enemies) {
+            e.update(delta);
+        }
 
         gameTime += delta;
     }

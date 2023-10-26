@@ -15,7 +15,7 @@ public class Enemy extends Rectangle2D.Double implements Entity {
     
     Enemy(Game game, double x, double y) {
         this.game = game;
-        vy = 100;
+        vy = 30;
         this.x = x;
         this.y = y;
         height = SIZE;
@@ -32,7 +32,9 @@ public class Enemy extends Rectangle2D.Double implements Entity {
             // player loses hp
             return;
         } else {
-            y = delta * vy;
+            y += delta * vy;
+            double yy = y/10;
+            x += 3*Math.sin(yy);
         }
     }
 }
