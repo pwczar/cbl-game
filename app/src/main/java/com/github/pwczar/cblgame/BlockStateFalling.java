@@ -1,8 +1,5 @@
 package com.github.pwczar.cblgame;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 /**
  * A falling Block's state.
  */
@@ -11,20 +8,6 @@ public class BlockStateFalling extends BlockState {
 
     BlockStateFalling(Block block) {
         super(block);
-    }
-
-    /**
-     * Draw a falling Block.
-     */
-    public void draw(Graphics g) {
-        Color c = new Color(
-            block.color.getRed(),
-            block.color.getGreen(),
-            block.color.getBlue(),
-            160
-        );
-        g.setColor(c);
-        drawRect(g);
     }
 
     /**
