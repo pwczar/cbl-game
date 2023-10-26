@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 /**
  * A grid of blocks, some of which may be unaligned.
@@ -57,7 +56,10 @@ public class BlockGrid implements Entity {
             return;
         }
 
-        if (block.state instanceof BlockStateStacked) {
+        if (block.state instanceof BlockStateRemoved) {
+            grid[(int) (block.x / Block.SIZE)][(int) (block.y / Block.SIZE)] = null;
+            unstackBlockAt((int) (block.x / Block.SIZE), (int) (block.y / Block.SIZE) - 1);
+        } else if (block.state instanceof BlockStateStacked) {
             unstackBlockAt((int) (block.x / Block.SIZE), (int) (block.y / Block.SIZE));
         }
         toBeRemoved.add(block);
@@ -115,8 +117,10 @@ public class BlockGrid implements Entity {
             return;
         }
 
-        grid[col][row] = null;
-        block.fall();
+        if (!(block.state instanceof BlockStateRemoved)) {
+            grid[col][row] = null;
+            block.fall();
+        }
 
         unstackBlockAt(col, row - 1);
     }
@@ -140,9 +144,9 @@ public class BlockGrid implements Entity {
 
         if (ln != null && rn != null
             && ln.color == block.color && rn.color == block.color) {
-            putBlockAt(null, col, row);
-            putBlockAt(null, col - 1, row);
-            putBlockAt(null, col + 1, row);
+            getBlockAt(col, row).state = new BlockStateRemoved(getBlockAt(col, row));
+            getBlockAt(col - 1, row).state = new BlockStateRemoved(getBlockAt(col - 1, row));
+            getBlockAt(col + 1, row).state = new BlockStateRemoved(getBlockAt(col + 1, row));
             // TODO: add an animation/effect + award points?
         } else if (ln != null && ln.color == block.color) {
             evalPatternsAt(col - 1, row);
@@ -156,9 +160,9 @@ public class BlockGrid implements Entity {
 
         if (tn != null && bn != null
             && tn.color == block.color && bn.color == block.color) {
-            putBlockAt(null, col, row - 1);
-            putBlockAt(null, col, row);
-            putBlockAt(null, col, row + 1);
+            getBlockAt(col, row - 1).state = new BlockStateRemoved(getBlockAt(col, row - 1));
+            getBlockAt(col, row).state = new BlockStateRemoved(getBlockAt(col, row));
+            getBlockAt(col, row + 1).state = new BlockStateRemoved(getBlockAt(col, row + 1));
             // TODO: same as horizontal
         } else if (tn != null && tn.color == block.color) {
             evalPatternsAt(col, row - 1);

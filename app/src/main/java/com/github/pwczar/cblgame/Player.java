@@ -135,7 +135,9 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             int col = getInteractCol();
             int row = getInteractRow();
             Block block = game.grid.getBlockAt(col, row);
-            if (heldBlock == null && block != null) {
+            if (heldBlock == null
+                && block != null
+                && !(block.state instanceof BlockStateRemoved)) {
                 // pick up a Block
                 heldBlock = block;
                 game.grid.putBlockAt(null, col, row);
