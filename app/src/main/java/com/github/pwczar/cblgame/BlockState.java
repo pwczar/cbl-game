@@ -5,11 +5,15 @@ import java.awt.Graphics;
 /**
  * A Block's state, defines what to do on draw and update.
  */
-public abstract class BlockState implements Entity {
+public abstract class BlockState implements Entity, Cloneable {
     final Block block;
 
     BlockState(Block block) {
         this.block = block;
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     /**

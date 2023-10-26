@@ -33,7 +33,7 @@ public class BlockStateFalling extends BlockState {
     public void update(double delta) {
         block.y += vy * delta;
         if (block.intersects(block.game.floor)) {
-            block.putOnGrid();
+            block.stackOnGrid();
         }
 
         for (Block b : block.grid.getBlocks()) {
@@ -43,7 +43,7 @@ public class BlockStateFalling extends BlockState {
             if (block.intersects(b)) {
                 block.y = b.y - block.height;
                 if (b.state instanceof BlockStateStacked) {
-                    block.putOnGrid();
+                    block.stackOnGrid();
                 }
             }
         }

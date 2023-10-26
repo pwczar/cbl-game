@@ -56,12 +56,6 @@ public class BlockGrid implements Entity {
             return;
         }
 
-        if (block.state instanceof BlockStateRemoved) {
-            grid[(int) (block.x / Block.SIZE)][(int) (block.y / Block.SIZE)] = null;
-            unstackBlockAt((int) (block.x / Block.SIZE), (int) (block.y / Block.SIZE) - 1);
-        } else if (block.state instanceof BlockStateStacked) {
-            unstackBlockAt((int) (block.x / Block.SIZE), (int) (block.y / Block.SIZE));
-        }
         toBeRemoved.add(block);
     }
 
@@ -84,8 +78,12 @@ public class BlockGrid implements Entity {
      * @param col column of grid
      * @param row row of grid
      */
-    public void putBlockAt(Block block, int col, int row) {
-        if (block != null && blocks.indexOf(block) == -1) {
+    public void putBlockAt(Block block, int col, int row) throws NullPointerException {
+        if (block == null) {
+            throw new NullPointerException("Block cannot be null.");
+        }
+
+        if (blocks.indexOf(block) == -1) {
             blocks.add(block);
         }
 
@@ -94,10 +92,6 @@ public class BlockGrid implements Entity {
         }
 
         grid[col][row] = block;
-        if (block == null) {
-            unstackBlockAt(col, row - 1);
-            return;
-        }
 
         block.x = col * Block.SIZE;
         block.y = row * Block.SIZE;
@@ -113,15 +107,12 @@ public class BlockGrid implements Entity {
      */
     public void unstackBlockAt(int col, int row) {
         Block block = getBlockAt(col, row);
-        if (block == null) {
+        if (block == null || block.state instanceof BlockStateRemoved) {
             return;
         }
 
-        if (!(block.state instanceof BlockStateRemoved)) {
-            grid[col][row] = null;
-            block.fall();
-        }
-
+        grid[col][row] = null;
+        block.fall();
         unstackBlockAt(col, row - 1);
     }
 
@@ -144,8 +135,8 @@ public class BlockGrid implements Entity {
 
         if (ln != null && rn != null
             && ln.color == block.color && rn.color == block.color) {
-            getBlockAt(col, row).state = new BlockStateRemoved(getBlockAt(col, row));
             getBlockAt(col - 1, row).state = new BlockStateRemoved(getBlockAt(col - 1, row));
+            getBlockAt(col, row).state     = new BlockStateRemoved(getBlockAt(col, row));
             getBlockAt(col + 1, row).state = new BlockStateRemoved(getBlockAt(col + 1, row));
             // TODO: add an animation/effect + award points?
         } else if (ln != null && ln.color == block.color) {
@@ -161,7 +152,7 @@ public class BlockGrid implements Entity {
         if (tn != null && bn != null
             && tn.color == block.color && bn.color == block.color) {
             getBlockAt(col, row - 1).state = new BlockStateRemoved(getBlockAt(col, row - 1));
-            getBlockAt(col, row).state = new BlockStateRemoved(getBlockAt(col, row));
+            getBlockAt(col, row).state     = new BlockStateRemoved(getBlockAt(col, row));
             getBlockAt(col, row + 1).state = new BlockStateRemoved(getBlockAt(col, row + 1));
             // TODO: same as horizontal
         } else if (tn != null && tn.color == block.color) {
@@ -199,11 +190,12 @@ public class BlockGrid implements Entity {
         }
 
         for (Block block : toBeRemoved) {
+            grid[(int) (block.x / Block.SIZE)][(int) (block.y / Block.SIZE)] = null;
+            blocks.remove(block);
             unstackBlockAt(
                 (int) (block.x / Block.SIZE),
-                (int) (block.y / Block.SIZE)
+                (int) (block.y / Block.SIZE) - 1
             );
-            blocks.remove(block);
         }
         toBeRemoved.clear();
     }

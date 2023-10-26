@@ -138,8 +138,9 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
                 && block != null
                 && !(block.state instanceof BlockStateRemoved)) {
                 // pick up a Block
-                heldBlock = block;
-                game.grid.putBlockAt(null, col, row);
+                heldBlock = block.clone();
+                heldBlock.state = new BlockStateStacked(heldBlock);
+                game.grid.removeBlock(block);
             } else if (heldBlock != null && block == null
                        && col >= 0 && col < game.grid.getWidth()
                        && row >= 0 && row < game.grid.getHeight()) {

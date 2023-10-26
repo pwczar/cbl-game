@@ -34,9 +34,22 @@ public class Block extends Rectangle2D.Double implements Entity {
     }
 
     /**
-     * Stop the block and put (align) it on the grid.
+     * Clone a Block.
      */
-    public void putOnGrid() {
+    public Block clone() {
+        Block block = (Block) super.clone();
+        try {
+            block.state = state.getClass().cast(state.clone());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return block;
+    }
+
+    /**
+     * Stack the block on the grid.
+     */
+    public void stackOnGrid() {
         int col = (int) (x / SIZE);
         int row = grid.getHeight() - 1;
 
