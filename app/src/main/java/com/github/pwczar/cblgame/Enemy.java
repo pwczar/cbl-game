@@ -35,6 +35,15 @@ public class Enemy extends Rectangle2D.Double implements Entity {
             y += delta * vy;
             double yy = y/10;
             x += 3*Math.sin(yy);
+
+            for (Rectangle2D b : game.boundaries) {
+                if (!this.intersects(b)) {
+                    continue;
+                } else {
+                    x -= 3*Math.sin(yy);
+                }
         }
+
     }
+}
 }
