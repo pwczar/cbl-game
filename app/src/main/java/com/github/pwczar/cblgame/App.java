@@ -36,9 +36,8 @@ public class App extends JFrame {
     synchronized void setScene(Scene scene) {
         if (this.scene != null) {
             this.scene.exit();
+            remove(this.scene);
         }
-
-        getContentPane().removeAll();
 
         this.scene = scene;
         this.scene.run();
