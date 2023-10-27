@@ -20,6 +20,7 @@ public class Game extends Scene {
     // TODO: rewrite as a class implementing Entity
     Rectangle2D[] boundaries;
     Rectangle2D floor;
+    static final int FLOOR_OFFSET = Block.SIZE * 3;
 
     BlockGrid grid;
 
@@ -32,11 +33,9 @@ public class Game extends Scene {
     Game(App app) {
         super(app);
 
-        player = new Player(this, app.getWidth() / 2, app.getHeight());
-
         boundaries = new Rectangle2D[] {
             // floor
-            new Rectangle2D.Double(0, app.getHeight(), app.getWidth(), 128),
+            new Rectangle2D.Double(0, app.getHeight() - FLOOR_OFFSET, app.getWidth(), 128),
             // left boundary
             new Rectangle2D.Double(0 - 128, 0, 128, app.getHeight()),
             // right boundary
@@ -44,10 +43,12 @@ public class Game extends Scene {
         };
         floor = boundaries[0];
 
+        player = new Player(this, app.getWidth() / 2, floor.getY());
+
         grid = new BlockGrid(
             this,
             app.getWidth() / Block.SIZE,
-            app.getHeight() / Block.SIZE
+            (app.getHeight() - FLOOR_OFFSET) / Block.SIZE
         );
 
         addEntity(player);
