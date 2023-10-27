@@ -13,8 +13,6 @@ public class Game extends Scene {
     double gravity = 10;
 
     private List<Entity> entities = new ArrayList<>();
-    private List<Entity> toBeAddedEntities = new ArrayList<>();
-    private List<Entity> toBeRemovedEntities = new ArrayList<>();
 
     Player player;
     double gameTime = 0;
@@ -65,10 +63,10 @@ public class Game extends Scene {
      * @param ent the Entity to add
      */
     public void addEntity(Entity ent) {
-        if (entities.indexOf(ent) != -1 || toBeAddedEntities.indexOf(ent) != -1) {
+        if (entities.indexOf(ent) != -1) {
             return;
         }
-        toBeAddedEntities.add(ent);
+        entities.add(ent);
     }
 
     /**
@@ -79,11 +77,11 @@ public class Game extends Scene {
         if (ent == player || ent == grid) {
             throw new IllegalArgumentException("This entity cannot be removed.");
         }
-        toBeRemovedEntities.add(ent);
+        entities.remove(ent);
     }
 
     public List<Entity> getEntities() {
-        return Collections.unmodifiableList(entities);
+        return Collections.unmodifiableList(new ArrayList<>(entities));
     }
 
     /**
@@ -93,7 +91,7 @@ public class Game extends Scene {
     public void draw(Graphics g) {
         g.clearRect(0, 0, app.getWidth(), app.getHeight());
 
-        for (Entity ent : entities) {
+        for (Entity ent : getEntities()) {
             ent.draw(g);
         }
 
@@ -105,18 +103,9 @@ public class Game extends Scene {
      * @param delta time since the last update (frame)
      */
     public void update(double delta) {
-        for (Entity ent : entities) {
+        for (Entity ent : getEntities()) {
             ent.update(delta);
         }
-
-        for (Entity ent : toBeAddedEntities) {
-            entities.add(ent);
-        }
-        toBeAddedEntities.clear();
-        for (Entity ent : toBeRemovedEntities) {
-            entities.remove(ent);
-        }
-        toBeRemovedEntities.clear();
 
         gameTime += delta;
     }

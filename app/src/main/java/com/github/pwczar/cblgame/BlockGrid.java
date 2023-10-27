@@ -16,7 +16,6 @@ public class BlockGrid implements Entity {
     private Block[][] grid;
     private BlockFactory factory;
     private Map<Block, Boolean> checkedBlocks = new HashMap<Block, Boolean>();
-    private List<Block> toBeRemoved = new ArrayList<>();
 
     /**
      * Initialize a BlockGrid.
@@ -40,7 +39,7 @@ public class BlockGrid implements Entity {
     }
 
     public List<Block> getBlocks() {
-        return Collections.unmodifiableList(blocks);
+        return Collections.unmodifiableList(new ArrayList<>(blocks));
     }
 
     public void addBlock() {
@@ -56,7 +55,10 @@ public class BlockGrid implements Entity {
             return;
         }
 
-        toBeRemoved.add(block);
+        int col = (int) (block.x / Block.SIZE);
+        int row = (int) (block.y / Block.SIZE);
+        grid[col][row] = null;
+        blocks.remove(block);
     }
 
     /**
@@ -88,7 +90,7 @@ public class BlockGrid implements Entity {
         }
 
         if (getBlockAt(col, row) != null) {
-            toBeRemoved.add(getBlockAt(col, row));
+            blocks.remove(getBlockAt(col, row));
         }
 
         grid[col][row] = block;
@@ -185,18 +187,8 @@ public class BlockGrid implements Entity {
      * @param delta time since the last frame/update.
      */
     public void update(double delta) {
-        for (Block block : blocks) {
+        for (Block block : getBlocks()) {
             block.update(delta);
         }
-
-        for (Block block : toBeRemoved) {
-            grid[(int) (block.x / Block.SIZE)][(int) (block.y / Block.SIZE)] = null;
-            blocks.remove(block);
-            unstackBlockAt(
-                (int) (block.x / Block.SIZE),
-                (int) (block.y / Block.SIZE) - 1
-            );
-        }
-        toBeRemoved.clear();
     }
 }
