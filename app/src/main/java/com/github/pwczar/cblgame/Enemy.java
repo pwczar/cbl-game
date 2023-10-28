@@ -12,7 +12,7 @@ public class Enemy extends Rectangle2D.Double implements Entity {
     final Game game;
 
     double vy;
-    
+
     Enemy(Game game, double x, double y) {
         this.game = game;
         vy = 30;
@@ -28,22 +28,40 @@ public class Enemy extends Rectangle2D.Double implements Entity {
     }
 
     public void update(double delta) {
+        for (Entity ent : game.getEntities()) {
+            if (ent instanceof Block) {
+                if (((Block) ent).intersects(this)) {
+                    Block block = (Block) ent;
+                    game.removeEntity(block);
+                    game.removeEntity(this);
+                }
+            }
+        }
+
+        for (Block block : game.grid.getBlocks()) {
+            if (block.state instanceof BlockStateStacked
+                    && block.intersects(this)) {
+                block.state = new BlockStateDestroyed(block);
+                game.removeEntity(this);
+            }
+        }
         if (intersects(game.floor)) {
+            game.removeEntity(this);
             // player loses hp
             return;
         } else {
             y += delta * vy;
-            double yy = y/10;
-            x += 3*Math.sin(yy);
+            double yy = y / 10;
+            x += 3 * Math.sin(yy);
 
             for (Rectangle2D b : game.boundaries) {
                 if (!this.intersects(b)) {
                     continue;
                 } else {
-                    x -= 3*Math.sin(yy);
+                    x -= 3 * Math.sin(yy);
                 }
-        }
+            }
 
+        }
     }
-}
 }
