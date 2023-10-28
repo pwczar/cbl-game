@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
@@ -42,6 +43,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
     Animation torsoAnimation;
     Animation legsAnimation;
+
+    Image blockHighlightImage;
 
     /**
      * Initialize a Player object.
@@ -87,6 +90,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
         torsoAnimation = idleAnimationTorso;
         legsAnimation = idleAnimationLegs;
+
+        blockHighlightImage = game.loadSprite("block_highlight.png");
     }
 
     /**
@@ -247,9 +252,9 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         int col = getInteractCol();
         int row = getInteractRow();
         if (heldBlock == null) {
-            if (game.grid.getBlockAt(col, row) != null) {
-                g.setColor(new Color(255, 255, 255, 240));
-                g.drawRect(col * Block.SIZE, row * Block.SIZE, Block.SIZE - 1, Block.SIZE - 1);
+            if (game.grid.getBlockAt(col, row) != null
+                && !(game.grid.getBlockAt(col, row).state instanceof BlockStateRemoved)) {
+                g.drawImage(blockHighlightImage, col * Block.SIZE, row * Block.SIZE, null);
             }
         } else {
             heldBlock.draw(g);
@@ -307,23 +312,20 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
         if (moveDir == 0) {
             legsAnimation = idleAnimationLegs;
-            if (heldBlock == null) {
-                torsoAnimation = idleAnimationTorso;
-            } else {
-                torsoAnimation = holdingAnimationTorso;
-            }
+            torsoAnimation = idleAnimationTorso;
         } else {
             if (legsAnimation != runAnimationLegs) {
                 // start with first frame
                 runAnimationLegs.restart();
             }
             legsAnimation = runAnimationLegs;
-            if (heldBlock == null) {
-                if (torsoAnimation != runAnimationTorso) {
-                    runAnimationTorso.restart();
-                }
-                torsoAnimation = runAnimationTorso;
+            if (torsoAnimation != runAnimationTorso) {
+                runAnimationTorso.restart();
             }
+            torsoAnimation = runAnimationTorso;
+        }
+        if (heldBlock != null) {
+            torsoAnimation = holdingAnimationTorso;
         }
         if (!onFloor) {
             legsAnimation = idleAnimationLegs;
