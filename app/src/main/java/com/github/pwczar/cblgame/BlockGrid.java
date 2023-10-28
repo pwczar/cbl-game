@@ -137,14 +137,14 @@ public class BlockGrid implements Entity {
         Block rn = getBlockAt(col + 1, row);
 
         if (ln != null && rn != null
-            && ln.color == block.color && rn.color == block.color) {
+            && ln.type == block.type && rn.type == block.type) {
             getBlockAt(col - 1, row).state = new BlockStateRemoved(getBlockAt(col - 1, row));
             getBlockAt(col, row).state     = new BlockStateRemoved(getBlockAt(col, row));
             getBlockAt(col + 1, row).state = new BlockStateRemoved(getBlockAt(col + 1, row));
             // TODO: add an animation/effect + award points?
-        } else if (ln != null && ln.color == block.color) {
+        } else if (ln != null && ln.type == block.type) {
             evalPatternsAt(col - 1, row);
-        } else if (rn != null && rn.color == block.color) {
+        } else if (rn != null && rn.type == block.type) {
             evalPatternsAt(col + 1, row);
         }
 
@@ -153,14 +153,14 @@ public class BlockGrid implements Entity {
         Block bn = getBlockAt(col, row + 1);
 
         if (tn != null && bn != null
-            && tn.color == block.color && bn.color == block.color) {
+            && tn.type == block.type && bn.type == block.type) {
             getBlockAt(col, row - 1).state = new BlockStateRemoved(getBlockAt(col, row - 1));
             getBlockAt(col, row).state     = new BlockStateRemoved(getBlockAt(col, row));
             getBlockAt(col, row + 1).state = new BlockStateRemoved(getBlockAt(col, row + 1));
             // TODO: same as horizontal
-        } else if (tn != null && tn.color == block.color) {
+        } else if (tn != null && tn.type == block.type) {
             evalPatternsAt(col, row - 1);
-        } else if (bn != null && bn.color == block.color) {
+        } else if (bn != null && bn.type == block.type) {
             evalPatternsAt(col, row + 1);
         }
     }

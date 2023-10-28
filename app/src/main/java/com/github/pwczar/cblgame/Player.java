@@ -1,7 +1,9 @@
 package com.github.pwczar.cblgame;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
@@ -254,13 +256,12 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             if (game.grid.getBlockAt(col, row) == null
                 && col >= 0 && col < game.grid.getWidth()
                 && row >= 0 && row < game.grid.getHeight()) {
-                g.setColor(new Color(
-                    heldBlock.color.getRed(),
-                    heldBlock.color.getGreen(),
-                    heldBlock.color.getBlue(),
-                    190
-                ));
-                g.fillRect(col * Block.SIZE, row * Block.SIZE, Block.SIZE - 1, Block.SIZE - 1);
+                Graphics2D g2d = (Graphics2D) g;
+                // apply opacity
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+                g.drawImage(heldBlock.sprite, col * Block.SIZE, row * Block.SIZE, null);
+                // reset AlphaComposite
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             }
         }
     }

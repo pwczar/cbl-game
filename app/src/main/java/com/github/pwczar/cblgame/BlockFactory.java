@@ -1,6 +1,7 @@
 package com.github.pwczar.cblgame;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.Timer;
@@ -14,7 +15,7 @@ public class BlockFactory {
     final BlockGrid grid;
     Random rand;
 
-    Color[] colors;
+    Image[] sprites;
 
     Timer spawnTimer;
     // time between block-spanws (in seconds)
@@ -29,10 +30,10 @@ public class BlockFactory {
         this.game = game;
         this.grid = grid;
         this.rand = new Random(System.currentTimeMillis());
-        this.colors = new Color[] {
-            new Color(110, 80, 220),
-            new Color(230, 100, 100),
-            new Color(100, 220, 100),
+        this.sprites = new Image[] {
+            game.loadSprite("bricks_green.png"),
+            game.loadSprite("bricks_red.png"),
+            game.loadSprite("bricks_blue.png")
         };
     }
 
@@ -41,12 +42,14 @@ public class BlockFactory {
      * @return the new block
      */
     Block createBlock() {
+        int type = rand.nextInt(3);
         Block block = new Block(
             game,
             grid,
             rand.nextInt(grid.getWidth()) * Block.SIZE,
             0,
-            colors[rand.nextInt(colors.length)]
+            type,
+            sprites[type]
         );
 
         return block;

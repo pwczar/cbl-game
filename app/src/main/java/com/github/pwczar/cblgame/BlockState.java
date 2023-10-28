@@ -12,24 +12,10 @@ public abstract class BlockState implements Entity {
         this.block = block;
     }
 
-    /**
-     * Draw a rectangle matching the Block.
-     * @param g graphics context
-     */
-    public void drawRect(Graphics g) {
-        g.fillRect(
-            (int) block.getX(),
-            (int) block.getY(),
-            (int) block.getWidth(),
-            (int) block.getHeight()
-        );
-    }
-
-    /**
+        /**
      * Draw the Block.
      */
     public void draw(Graphics g) {
-        g.setColor(block.color);
-        drawRect(g);
+        g.drawImage(block.sprite, (int) block.x, (int) block.y, null);
     }
 }

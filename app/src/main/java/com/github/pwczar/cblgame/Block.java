@@ -1,7 +1,7 @@
 package com.github.pwczar.cblgame;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
@@ -12,22 +12,27 @@ import java.util.Random;
 public class Block extends Rectangle2D.Double implements Entity {
     static Random rand = new Random(System.currentTimeMillis());
     static final int SIZE = 12;
+    static final int TYPE_GREEN = 0;
+    static final int TYPE_RED = 1;
+    static final int TYPE_BLUE = 2;
 
     final Game game;
     final BlockGrid grid;
 
     BlockState state;
-    Color color;
+    int type;
+    Image sprite;
 
     /**
      * Initialize a Block object.
      */
-    Block(Game game, BlockGrid grid, double x, double y, Color color) {
+    Block(Game game, BlockGrid grid, double x, double y, int type, Image sprite) {
         this.game = game;
         this.grid = grid;
         this.x = x;
         this.y = y;
-        this.color = color;
+        this.type = type;
+        this.sprite = sprite;
         width = SIZE;
         height = SIZE;
         state = new BlockStateFalling(this);
