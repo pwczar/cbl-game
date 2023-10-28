@@ -19,6 +19,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     double moveSpeed = 160;
     double jumpForce = 200;
 
+    double hp;
+
     // controls state
     private boolean moveLeft = false;
     private boolean moveRight = false;
@@ -39,6 +41,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         y = 0;
         width = 24;
         height = 32;
+        hp = 5;
     }
 
     /**
@@ -245,6 +248,10 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         if (heldBlock != null) {
             heldBlock.x = x - (Block.SIZE - width) / 2;
             heldBlock.y = y - Block.SIZE;
+        }
+
+        if (hp <= 0) {
+            game.app.setScene(new GameOver(game.app, game.gameTime));
         }
     }
 }

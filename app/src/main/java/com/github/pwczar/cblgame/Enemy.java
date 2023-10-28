@@ -47,7 +47,7 @@ public class Enemy extends Rectangle2D.Double implements Entity {
         }
         if (intersects(game.floor)) {
             game.removeEntity(this);
-            // player loses hp
+            game.player.hp -= 1;
             return;
         } else {
             y += delta * vy;
