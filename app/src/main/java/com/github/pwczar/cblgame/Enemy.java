@@ -1,6 +1,5 @@
 package com.github.pwczar.cblgame;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;

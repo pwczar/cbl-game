@@ -9,7 +9,6 @@ import javax.swing.*;
 public class Pumpkin extends Rectangle2D.Double implements Entity {
 
     static Random rand = new Random(System.currentTimeMillis());
-    static final int SIZE = 12;
 
     final Menu menu;
 
@@ -17,14 +16,16 @@ public class Pumpkin extends Rectangle2D.Double implements Entity {
 
     Image sprite;
 
-    Pumpkin(Menu menu, double x, double y) {
+    Pumpkin(Menu menu) {
         this.menu = menu;
-        vy = 20;
-        this.x = x;
-        this.y = y;
-        height = SIZE;
-        width = SIZE;
-        sprite = new ImageIcon("pumpkin.png").getImage();
+        vy = rand.nextInt(30) + 50;;
+        x = rand.nextInt(menu.app.getWidth());
+        y = rand.nextInt(menu.app.getHeight());
+        height = 12;
+        width = 12;
+        sprite = new ImageIcon(
+            getClass().getClassLoader().getResource("pumpkin.png"))
+            .getImage().getScaledInstance(36, 36, Image.SCALE_SMOOTH);
     }
 
     public void draw(Graphics g) {
@@ -34,8 +35,10 @@ public class Pumpkin extends Rectangle2D.Double implements Entity {
     public void update(double delta) {
         y += vy * delta;
 
-        if (this.y >= menu.getHeight()) {
+        if (this.y >= menu.app.getHeight()) {
             y = -sprite.getHeight(null);
+            x = rand.nextInt(500);
+            vy = rand.nextInt(30) + 50;
         }
     }
 }
