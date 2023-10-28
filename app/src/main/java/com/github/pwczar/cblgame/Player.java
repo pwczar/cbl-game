@@ -19,7 +19,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     double vx = 0;
     double vy = 0;
 
-    double mass = 60;
+    double gravity = 360;
     double moveSpeed = 60;
     double jumpForce = 100;
 
@@ -176,6 +176,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         } else if (e.getKeyCode() == (int) 'D') {
             moveRight = true;
         } else if (e.getKeyCode() == (int) ' ') {
+            // jump on space
             if (onFloor) {
                 vy = -jumpForce;
             }
@@ -183,6 +184,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             int col = getInteractCol();
             int row = getInteractRow();
             Block block = game.grid.getBlockAt(col, row);
+
             if (heldBlock == null
                 && block != null
                 && !(block.state instanceof BlockStateRemoved)) {
@@ -317,12 +319,45 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     }
 
     /**
+     * Update the player's animation.
+     */
+    private void updateAnimation(double delta, int moveDir) {
+        if (moveDir == 0) {
+            // the player is standing
+            legsAnimation = idleAnimationLegs;
+            torsoAnimation = idleAnimationTorso;
+        } else {
+            if (legsAnimation != runAnimationLegs) {
+                // start with first frame
+                runAnimationLegs.restart();
+            }
+            legsAnimation = runAnimationLegs;
+            if (torsoAnimation != runAnimationTorso) {
+                runAnimationTorso.restart();
+            }
+            torsoAnimation = runAnimationTorso;
+        }
+        if (heldBlock != null) {
+            // the player is not holding anything
+            torsoAnimation = holdingAnimationTorso;
+        }
+        if (!onFloor) {
+            // the player is in the air
+            legsAnimation = idleAnimationLegs;
+        }
+
+        torsoAnimation.update(delta);
+        legsAnimation.update(delta);
+    }
+
+    /**
      * Update the player character.
      */
     public void update(double delta) {
         // gravitational acceleration
-        vy += game.gravity * mass * delta;
+        vy += gravity * delta;
 
+        // where should the player move?
         short moveDir = 0;
         if (moveLeft) {
             moveDir--;
@@ -339,52 +374,37 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
         vx = moveDir * moveSpeed;
 
+        // update position
         x += delta * vx;
         y += delta * vy;
 
         onFloor = false;
+        // collide with game boundaries
         for (Rectangle2D boundary : game.boundaries) {
             this.collideWith(boundary);
         }
+
+        // collide with blocks
         for (Block block : game.grid.getBlocks()) {
             this.collideWith(block);
         }
 
         if (heldBlock != null) {
+            // move the held block above the player's head
             heldBlock.x = x - (Block.SIZE - width) / 2;
             heldBlock.y = y - Block.SIZE;
         }
 
         if (hp <= 0) {
+            // die
             game.app.setScene(new GameOver(game.app, game.gameTime));
         }
 
+        // update all active upgrades
         for (Upgrade up : new ArrayList<>(upgrades)) {
             up.update(delta);
         }
 
-        if (moveDir == 0) {
-            legsAnimation = idleAnimationLegs;
-            torsoAnimation = idleAnimationTorso;
-        } else {
-            if (legsAnimation != runAnimationLegs) {
-                // start with first frame
-                runAnimationLegs.restart();
-            }
-            legsAnimation = runAnimationLegs;
-            if (torsoAnimation != runAnimationTorso) {
-                runAnimationTorso.restart();
-            }
-            torsoAnimation = runAnimationTorso;
-        }
-        if (heldBlock != null) {
-            torsoAnimation = holdingAnimationTorso;
-        }
-        if (!onFloor) {
-            legsAnimation = idleAnimationLegs;
-        }
-
-        torsoAnimation.update(delta);
-        legsAnimation.update(delta);
+        updateAnimation(delta, moveDir);
     }
 }

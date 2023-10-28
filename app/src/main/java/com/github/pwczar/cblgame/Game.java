@@ -16,8 +16,6 @@ import javax.swing.ImageIcon;
 public class Game extends Scene {
     static final double SCALE = 4.0;
 
-    double gravity = 6;
-
     private List<Entity> entities = new ArrayList<>();
 
     Player player;
