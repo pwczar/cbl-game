@@ -3,7 +3,7 @@ package com.github.pwczar.cblgame;
 public class JumpUpgrade extends Upgrade {
     JumpUpgrade(Player player) {
         super(player);
-        time = 5;
+        time = 8;
         icon = player.game.loadSprite("jump_boost.png");
     }
 

@@ -3,7 +3,7 @@ package com.github.pwczar.cblgame;
 public class MovespeedUpgrade extends Upgrade {
     MovespeedUpgrade(Player player) {
         super(player);
-        time = 5;
+        time = 8;
         icon = player.game.loadSprite("hermes.png");
     }
 
