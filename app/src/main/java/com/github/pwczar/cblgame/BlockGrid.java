@@ -58,6 +58,7 @@ public class BlockGrid implements Entity {
         int col = (int) (block.x / Block.SIZE);
         int row = (int) (block.y / Block.SIZE);
         grid[col][row] = null;
+        unstackBlockAt(col, row - 1);
         blocks.remove(block);
     }
 
