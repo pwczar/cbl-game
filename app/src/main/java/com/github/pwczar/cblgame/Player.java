@@ -2,9 +2,13 @@ package com.github.pwczar.cblgame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 /**
  * The class representing the player character.
@@ -201,8 +205,28 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         // draw the sprite with an offset
         int ox = (int) (x - 1);
         int oy = (int) (y - 1);
-        g.drawImage(legsAnimation.getFrame(), ox, oy, null);
-        g.drawImage(torsoAnimation.getFrame(), ox, oy, null);
+        if (facingRight) {
+            g.drawImage(legsAnimation.getFrame(), ox, oy, null);
+            g.drawImage(torsoAnimation.getFrame(), ox, oy, null);
+        } else {
+            // draw the sprite flipped
+            g.drawImage(
+                legsAnimation.getFrame(),
+                ox + legsAnimation.getFrame().getWidth(null),
+                oy,
+                legsAnimation.getFrame().getWidth(null) * -1,
+                legsAnimation.getFrame().getHeight(null),
+                null
+            );
+            g.drawImage(
+                torsoAnimation.getFrame(),
+                ox + torsoAnimation.getFrame().getWidth(null),
+                oy,
+                torsoAnimation.getFrame().getWidth(null) * -1,
+                torsoAnimation.getFrame().getHeight(null),
+                null
+            );
+        }
     }
 
     /**
