@@ -1,16 +1,23 @@
 package com.github.pwczar.cblgame;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 /**
  * Main game logic thread.
  */
 public class Game extends Scene {
-    double gravity = 10;
+    static final double SCALE = 4.0;
+
+    double gravity = 6;
 
     private List<Entity> entities = new ArrayList<>();
 
@@ -20,7 +27,7 @@ public class Game extends Scene {
     // TODO: rewrite as a class implementing Entity
     Rectangle2D[] boundaries;
     Rectangle2D floor;
-    static final int FLOOR_OFFSET = Block.SIZE * 3;
+    final int floorOffset;
 
     BlockGrid grid;
 
@@ -33,30 +40,50 @@ public class Game extends Scene {
     Game(App app) {
         super(app);
 
+        floorOffset = getGameHeight()
+            - (getGameHeight() / Block.SIZE) * Block.SIZE + Block.SIZE * 3;
+
         boundaries = new Rectangle2D[] {
             // floor
-            new Rectangle2D.Double(0, app.getHeight() - FLOOR_OFFSET, app.getWidth(), 128),
+            new Rectangle2D.Double(
+                0,
+                getGameHeight() - floorOffset,
+                getGameWidth(),
+                128
+            ),
             // left boundary
-            new Rectangle2D.Double(0 - 128, 0, 128, app.getHeight()),
+            new Rectangle2D.Double(0 - 128, 0, 128, getGameHeight()),
             // right boundary
-            new Rectangle2D.Double(app.getWidth(), 0, 128, app.getHeight()),
+            new Rectangle2D.Double(getGameWidth(), 0, 128, getGameHeight()),
         };
         floor = boundaries[0];
 
-        player = new Player(this, app.getWidth() / 2, floor.getY());
+        player = new Player(this, getGameWidth() / 2, floor.getY());
 
         grid = new BlockGrid(
             this,
-            app.getWidth() / Block.SIZE,
-            (app.getHeight() - FLOOR_OFFSET) / Block.SIZE
+            getGameWidth() / Block.SIZE,
+            (getGameHeight() - floorOffset) / Block.SIZE
         );
 
         addEntity(player);
         addEntity(grid);
 
         for (int i = 0; i < 5; i++) {
-            addEntity(enemyFactory.createEnemy());
+            // addEntity(enemyFactory.createEnemy());
         }
+    }
+
+    int getGameWidth() {
+        return (int) (app.getWidth() / SCALE);
+    }
+
+    int getGameHeight() {
+        return (int) (app.getHeight() / SCALE);
+    }
+
+    Image loadSprite(String path) {
+        return new ImageIcon(getClass().getClassLoader().getResource(path)).getImage();
     }
 
     /**
@@ -90,13 +117,31 @@ public class Game extends Scene {
      * @param g graphics context
      */
     public void draw(Graphics g) {
-        g.clearRect(0, 0, app.getWidth(), app.getHeight());
+        Image buffer = new BufferedImage(
+            getGameWidth(),
+            getGameHeight(),
+            BufferedImage.TYPE_INT_ARGB
+        );
+        Graphics bg = buffer.getGraphics();
+
+        bg.setColor(new Color(255, 255, 255));
+        bg.fillRect(
+            0,
+            0,
+            getGameWidth(),
+            getGameHeight()
+        );
 
         for (Entity ent : getEntities()) {
-            ent.draw(g);
+            ent.draw(bg);
         }
 
-        player.drawUI(g);
+        player.drawUI(bg);
+
+        g.drawImage(
+            buffer.getScaledInstance(app.getWidth(), app.getHeight(), Image.SCALE_SMOOTH),
+            0, 0, null
+        );
     }
 
     /**

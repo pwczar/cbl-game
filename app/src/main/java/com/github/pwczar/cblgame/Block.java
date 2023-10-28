@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Block extends Rectangle2D.Double implements Entity {
     static Random rand = new Random(System.currentTimeMillis());
-    static final int SIZE = 32;
+    static final int SIZE = 12;
 
     final Game game;
     final BlockGrid grid;

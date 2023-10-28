@@ -7,12 +7,12 @@ import java.util.Random;
 
 public class Enemy extends Rectangle2D.Double implements Entity {
     static Random rand = new Random(System.currentTimeMillis());
-    static final int SIZE = 32;
+    static final int SIZE = 12;
 
     final Game game;
 
     double vy;
-    
+
     Enemy(Game game, double x, double y) {
         this.game = game;
         vy = 30;

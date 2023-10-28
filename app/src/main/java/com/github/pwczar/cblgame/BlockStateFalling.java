@@ -4,7 +4,7 @@ package com.github.pwczar.cblgame;
  * A falling Block's state.
  */
 public class BlockStateFalling extends BlockState {
-    double vy = 200;
+    double vy = 50;
 
     BlockStateFalling(Block block) {
         super(block);

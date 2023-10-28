@@ -16,8 +16,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     double vy = 0;
 
     double mass = 60;
-    double moveSpeed = 160;
-    double jumpForce = 200;
+    double moveSpeed = 60;
+    double jumpForce = 100;
 
     // controls state
     private boolean moveLeft = false;
@@ -30,6 +30,14 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
     Block heldBlock = null;
 
+    Animation idleAnimationTorso;
+    Animation idleAnimationLegs;
+
+    Animation holdingAnimationTorso;
+
+    Animation torsoAnimation;
+    Animation legsAnimation;
+
     /**
      * Initialize a Player object.
      */
@@ -37,8 +45,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         this.game = game;
         x = 0;
         y = 0;
-        width = 24;
-        height = 32;
+        width = 6;
+        height = 11;
     }
 
     /**
@@ -51,6 +59,20 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         this(game);
         this.x = x - getWidth() / 2;
         this.y = y - getHeight();
+
+        idleAnimationTorso = new Animation(game, new String[] {
+            "player_idle_torso.png"
+        }, 1.0, false);
+        idleAnimationLegs = new Animation(game, new String[] {
+            "player_idle_legs.png"
+        }, 1.0, false);
+
+        holdingAnimationTorso = new Animation(game, new String[] {
+            "player_holding_torso.png"
+        }, 1, false);
+
+        torsoAnimation = idleAnimationTorso;
+        legsAnimation = idleAnimationLegs;
     }
 
     /**
@@ -176,8 +198,11 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
      * Draw the player at their current position.
      */
     public void draw(Graphics g) {
-        g.setColor(new Color(0, 0, 0));
-        g.fillRect((int) x, (int) y, (int) width, (int) height);
+        // draw the sprite with an offset
+        int ox = (int) (x - 1);
+        int oy = (int) (y - 1);
+        g.drawImage(legsAnimation.getFrame(), ox, oy, null);
+        g.drawImage(torsoAnimation.getFrame(), ox, oy, null);
     }
 
     /**
@@ -246,5 +271,20 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             heldBlock.x = x - (Block.SIZE - width) / 2;
             heldBlock.y = y - Block.SIZE;
         }
+
+        if (moveDir == 0) {
+            legsAnimation = idleAnimationLegs;
+            legsAnimation.restart();
+            if (heldBlock == null) {
+                torsoAnimation = idleAnimationTorso;
+            } else {
+                torsoAnimation = holdingAnimationTorso;
+            }
+            torsoAnimation.restart();
+        } else {
+        }
+
+        torsoAnimation.update(delta);
+        legsAnimation.update(delta);
     }
 }
