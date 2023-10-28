@@ -1,6 +1,9 @@
 package com.github.pwczar.cblgame;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +20,8 @@ public class BlockGrid implements Entity {
     private BlockFactory factory;
     private Map<Block, Boolean> checkedBlocks = new HashMap<Block, Boolean>();
 
+    Image backgroundTile;
+
     /**
      * Initialize a BlockGrid.
      * @param game the game to work
@@ -28,6 +33,7 @@ public class BlockGrid implements Entity {
         grid
             = new Block[width][height];
         factory = new BlockFactory(game, this);
+        backgroundTile = game.loadSprite("bricks.png");
     }
 
     public int getWidth() {
@@ -178,6 +184,20 @@ public class BlockGrid implements Entity {
      * @param g the graphics context
      */
     public void draw(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        for (int col = 0; col < getWidth(); col++) {
+            for (int row = 0; row < getHeight(); row++) {
+                g.drawImage(
+                    backgroundTile,
+                    (int) (col * Block.SIZE),
+                    (int) (row * Block.SIZE),
+                    null
+                );
+            }
+        }
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+
         for (Block block : blocks) {
             block.draw(g);
         }

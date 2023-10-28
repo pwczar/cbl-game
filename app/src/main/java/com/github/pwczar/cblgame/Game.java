@@ -123,7 +123,7 @@ public class Game extends Scene {
         );
         Graphics bg = buffer.getGraphics();
 
-        bg.setColor(new Color(255, 255, 255));
+        bg.setColor(new Color(0, 0, 0));
         bg.fillRect(
             0,
             0,
@@ -131,7 +131,14 @@ public class Game extends Scene {
             getGameHeight()
         );
 
+        // draw the grid first
+        grid.draw(bg);
+
+        // draw all other entities
         for (Entity ent : getEntities()) {
+            if (ent == grid) {
+                continue;
+            }
             ent.draw(bg);
         }
 

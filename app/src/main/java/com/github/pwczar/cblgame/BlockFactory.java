@@ -1,6 +1,5 @@
 package com.github.pwczar.cblgame;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.util.ConcurrentModificationException;
 import java.util.Random;
