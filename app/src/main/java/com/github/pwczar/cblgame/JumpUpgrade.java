@@ -4,6 +4,7 @@ public class JumpUpgrade extends Upgrade {
     JumpUpgrade(Player player) {
         super(player);
         time = 5;
+        icon = player.game.loadSprite("jump_boost.png");
     }
 
     public void addUpgrade() {
