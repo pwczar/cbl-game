@@ -105,7 +105,8 @@ public class BlockGrid implements Entity {
         block.x = col * Block.SIZE;
         block.y = row * Block.SIZE;
 
-        if (getBlockAt(col, row + 1) != null) {
+        if (row == getHeight() - 1
+            || getBlockAt(col, row + 1) != null) {
             block.state = new BlockStateStacked(block);
             checkedBlocks.clear();
             matchBlocksAt(col, row);
