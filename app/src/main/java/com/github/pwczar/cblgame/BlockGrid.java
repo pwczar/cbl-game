@@ -106,7 +106,7 @@ public class BlockGrid implements Entity {
         block.y = row * Block.SIZE;
         block.state = new BlockStateStacked(block);
         checkedBlocks.clear();
-        evalPatternsAt(col, row);
+        matchBlocksAt(col, row);
     }
 
     /**
@@ -126,15 +126,43 @@ public class BlockGrid implements Entity {
     }
 
     /**
-     * Remove Block patterns.
+     * Remove blocks a, b, c if they have the same type and give the player an upgrade.
+     * This method already assumes a, b and c form a line.
+     * @param a block
+     * @param b block
+     * @param c block
+     * @return
      */
-    private void evalPatternsAt(int col, int row) {
-        Block block = getBlockAt(col, row);
-        if (block == null) {
-            return;
+    private boolean matchBlocks(Block a, Block b, Block c) {
+        if (a == null || b == null || c == null) {
+            return false;
         }
-        if (checkedBlocks.get(block) != null) {
-            return;
+        if (a.state instanceof BlockStateRemoved
+            || b.state instanceof BlockStateRemoved
+            || c.state instanceof BlockStateRemoved) {
+            return false;
+        }
+        if (a.type == b.type && b.type == c.type) {
+            a.state = new BlockStateRemoved(a);
+            b.state = new BlockStateRemoved(b);
+            c.state = new BlockStateRemoved(c);
+            // TODO: add an animation/effect + award points?
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Try to match blocks of the same type around col, row.
+     * @param col column
+     * @param row row
+     */
+    private boolean matchBlocksAt(int col, int row) {
+        Block block = getBlockAt(col, row);
+        if (block == null
+            || checkedBlocks.get(block) != null
+            || block.state instanceof BlockStateRemoved) {
+            return false;
         }
         checkedBlocks.put(block, true);
 
@@ -142,33 +170,23 @@ public class BlockGrid implements Entity {
         Block ln = getBlockAt(col - 1, row);
         Block rn = getBlockAt(col + 1, row);
 
-        if (ln != null && rn != null
-            && ln.type == block.type && rn.type == block.type) {
-            getBlockAt(col - 1, row).state = new BlockStateRemoved(getBlockAt(col - 1, row));
-            getBlockAt(col, row).state     = new BlockStateRemoved(getBlockAt(col, row));
-            getBlockAt(col + 1, row).state = new BlockStateRemoved(getBlockAt(col + 1, row));
-            // TODO: add an animation/effect + award points?
-        } else if (ln != null && ln.type == block.type) {
-            evalPatternsAt(col - 1, row);
-        } else if (rn != null && rn.type == block.type) {
-            evalPatternsAt(col + 1, row);
+        if (matchBlocks(ln, block, rn)
+            || matchBlocksAt(col - 1, row)
+            || matchBlocksAt(col + 1, row)) {
+            return true;
         }
 
         // vertical
         Block tn = getBlockAt(col, row - 1);
         Block bn = getBlockAt(col, row + 1);
 
-        if (tn != null && bn != null
-            && tn.type == block.type && bn.type == block.type) {
-            getBlockAt(col, row - 1).state = new BlockStateRemoved(getBlockAt(col, row - 1));
-            getBlockAt(col, row).state     = new BlockStateRemoved(getBlockAt(col, row));
-            getBlockAt(col, row + 1).state = new BlockStateRemoved(getBlockAt(col, row + 1));
-            // TODO: same as horizontal
-        } else if (tn != null && tn.type == block.type) {
-            evalPatternsAt(col, row - 1);
-        } else if (bn != null && bn.type == block.type) {
-            evalPatternsAt(col, row + 1);
+        if (matchBlocks(tn, block, bn)
+            || matchBlocksAt(col, row - 1)
+            || matchBlocksAt(col, row + 1)) {
+            return true;
         }
+
+        return false;
     }
 
     public void startSpawning() {
