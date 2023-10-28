@@ -1,8 +1,11 @@
 package com.github.pwczar.cblgame;
 
+import java.awt.Image;
+
 public abstract class Upgrade {
     final Player player;
     double time = 0;
+    Image icon;
 
     Upgrade(Player player) {
         this.player = player;

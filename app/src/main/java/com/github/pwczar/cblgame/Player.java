@@ -23,7 +23,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     double moveSpeed = 60;
     double jumpForce = 100;
 
-    double hp;
+    double hp = 5;
 
     List<Upgrade> upgrades = new ArrayList<>();
 
@@ -50,6 +50,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     Animation legsAnimation;
 
     Image blockHighlightImage;
+    Image heartImage;
 
     /**
      * Initialize a Player object.
@@ -60,19 +61,6 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         y = 0;
         width = 6;
         height = 11;
-        hp = 5;
-    }
-
-    /**
-     * Create a Player object at the given point.
-     * @param x the x coordinate (player center)
-     * @param y the y coordinate (bottom of player)
-     */
-    Player(Game game, double x, double y) {
-        // call the default constructor
-        this(game);
-        this.x = x - getWidth() / 2;
-        this.y = y - getHeight();
 
         idleAnimationTorso = new Animation(game, new String[] {
             "player_idle_torso.png"
@@ -98,6 +86,19 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         legsAnimation = idleAnimationLegs;
 
         blockHighlightImage = game.loadSprite("block_highlight.png");
+        heartImage = game.loadSprite("heart.png");
+    }
+
+    /**
+     * Create a Player object at the given point.
+     * @param x the x coordinate (player center)
+     * @param y the y coordinate (bottom of player)
+     */
+    Player(Game game, double x, double y) {
+        // call the default constructor
+        this(game);
+        this.x = x - getWidth() / 2;
+        this.y = y - getHeight();
     }
 
     /**
@@ -139,7 +140,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
         if (block.state instanceof BlockStateFalling
             && block.intersects(this)
             && block.getY() + block.getHeight() < this.y + this.height / 2) {
-            game.app.setScene(new GameOver(game.app, game.gameTime));
+            hp--;
+            game.grid.removeBlock(block);
         } else {
             this.collideWith((Rectangle2D) block);
         }
@@ -274,6 +276,22 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
                 // reset AlphaComposite
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             }
+        }
+
+        // draw hearts
+        int x = 0;
+        for (int i = 0; i < hp; i++, x += heartImage.getWidth(null)) {
+            g.drawImage(heartImage, x, 0, null);
+        }
+
+        // draw modifiers
+        x = 0;
+        for (Upgrade up : upgrades) {
+            if (up.icon == null) {
+                continue;
+            }
+            g.drawImage(up.icon, x, heartImage.getWidth(null), null);
+            x += up.icon.getWidth(null);
         }
     }
 

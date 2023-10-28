@@ -3,7 +3,7 @@ package com.github.pwczar.cblgame;
 public class JumpUpgrade extends Upgrade {
     JumpUpgrade(Player player) {
         super(player);
-        time = 3;
+        time = 5;
     }
 
     public void addUpgrade() {
