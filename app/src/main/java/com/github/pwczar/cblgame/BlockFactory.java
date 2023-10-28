@@ -32,7 +32,8 @@ public class BlockFactory {
         this.sprites = new Image[] {
             game.loadSprite("bricks_green.png"),
             game.loadSprite("bricks_red.png"),
-            game.loadSprite("bricks_blue.png")
+            game.loadSprite("bricks_blue.png"),
+            game.loadSprite("bricks.png")
         };
     }
 
@@ -41,7 +42,7 @@ public class BlockFactory {
      * @return the new block
      */
     Block createBlock() {
-        int type = rand.nextInt(3);
+        int type = rand.nextInt(4);
         Block block = new Block(
             game,
             grid,

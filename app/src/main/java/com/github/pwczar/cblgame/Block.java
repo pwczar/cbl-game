@@ -15,6 +15,7 @@ public class Block extends Rectangle2D.Double implements Entity {
     static final int TYPE_GREEN = 0;
     static final int TYPE_RED = 1;
     static final int TYPE_BLUE = 2;
+    static final int TYPE_GRAY = 3;
 
     final Game game;
     final BlockGrid grid;
