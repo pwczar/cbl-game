@@ -12,7 +12,7 @@ public abstract class BlockState implements Entity {
         this.block = block;
     }
 
-        /**
+    /**
      * Draw the Block.
      */
     public void draw(Graphics g) {
