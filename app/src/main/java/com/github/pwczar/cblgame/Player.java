@@ -221,8 +221,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
      */
     public void draw(Graphics g) {
         // draw the sprite with an offset
-        int ox = (int) (x - 1);
-        int oy = (int) (y - 1);
+        int ox = (int) (x + 0.5 - 1);
+        int oy = (int) (y + 0.5 - 1);
         if (facingRight) {
             g.drawImage(legsAnimation.getFrame(), ox, oy, null);
             g.drawImage(torsoAnimation.getFrame(), ox, oy, null);
