@@ -68,9 +68,7 @@ public class Game extends Scene {
         addEntity(player);
         addEntity(grid);
 
-        for (int i = 0; i < 5; i++) {
-            // addEntity(enemyFactory.createEnemy());
-        }
+        enemyFactory.spawnEnemy();
     }
 
     int getGameWidth() {

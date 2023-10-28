@@ -15,7 +15,7 @@ public class EnemyFactory {
     }
 
     Enemy createEnemy() {
-        Enemy en = new Enemy(game, rand.nextInt(500), 0);
+        Enemy en = new Enemy(game, rand.nextInt(game.getGameWidth()), 0);
         return en;
     }
 
