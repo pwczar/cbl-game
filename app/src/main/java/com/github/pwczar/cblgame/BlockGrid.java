@@ -131,7 +131,7 @@ public class BlockGrid implements Entity {
      * @param a block
      * @param b block
      * @param c block
-     * @return
+     * @return true if blocks were matched
      */
     private boolean matchBlocks(Block a, Block b, Block c) {
         if (a == null || b == null || c == null) {
@@ -156,6 +156,7 @@ public class BlockGrid implements Entity {
      * Try to match blocks of the same type around col, row.
      * @param col column
      * @param row row
+     * @return true if blocks were matched
      */
     private boolean matchBlocksAt(int col, int row) {
         Block block = getBlockAt(col, row);
