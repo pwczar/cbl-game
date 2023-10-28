@@ -1,13 +1,10 @@
 package com.github.pwczar.cblgame;
 
-public class HealthUpgrade implements Upgrade {
-
-    Player player;
-
+public class HealthUpgrade extends Upgrade {
     HealthUpgrade(Player player) {
-        this.player = player;
-        addUpgrade();
+        super(player);
     }
+
     public void addUpgrade() {
         if (player.hp < 5) {
             player.hp++;
@@ -15,9 +12,6 @@ public class HealthUpgrade implements Upgrade {
     }
 
     public void removeUpgrade() {
-    }
-
-    public void update(double delta) {
-        
+        // we don't have to do anything
     }
 }

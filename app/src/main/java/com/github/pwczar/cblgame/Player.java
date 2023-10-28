@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The class representing the player character.
@@ -22,6 +24,8 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     double jumpForce = 100;
 
     double hp;
+
+    List<Upgrade> upgrades = new ArrayList<>();
 
     // controls state
     private boolean moveLeft = false;
@@ -274,6 +278,27 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     }
 
     /**
+     * Give the player an upgrade corresponding to the block type.
+     * @param blockType the block type
+     */
+    public void giveUpgrade(int blockType) {
+        switch (blockType) {
+            case Block.TYPE_BLUE:
+                new MovespeedUpgrade(this).addUpgrade();
+                break;
+            case Block.TYPE_RED:
+                new HealthUpgrade(this).addUpgrade();
+                break;
+            case Block.TYPE_GREEN:
+                new JumpUpgrade(this).addUpgrade();
+                break;
+            default:
+                // other blockType, no upgrade
+                break;
+        }
+    }
+
+    /**
      * Update the player character.
      */
     public void update(double delta) {
@@ -314,6 +339,10 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
         if (hp <= 0) {
             game.app.setScene(new GameOver(game.app, game.gameTime));
+        }
+
+        for (Upgrade up : new ArrayList<>(upgrades)) {
+            up.update(delta);
         }
 
         if (moveDir == 0) {

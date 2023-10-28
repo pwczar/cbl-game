@@ -1,10 +1,25 @@
 package com.github.pwczar.cblgame;
 
-public interface Upgrade {
+public abstract class Upgrade {
+    final Player player;
+    double time = 0;
 
-    void addUpgrade();
+    Upgrade(Player player) {
+        this.player = player;
+    }
 
-    void removeUpgrade();
+    void addUpgrade() {
+        player.upgrades.add(this);
+    }
 
-    void update(double delta);
+    void removeUpgrade() {
+        player.upgrades.remove(this);
+    }
+
+    void update(double delta) {
+        time -= delta;
+        if (time <= 0) {
+            removeUpgrade();
+        }
+    }
 }

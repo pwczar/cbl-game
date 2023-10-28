@@ -146,7 +146,7 @@ public class BlockGrid implements Entity {
             a.state = new BlockStateRemoved(a);
             b.state = new BlockStateRemoved(b);
             c.state = new BlockStateRemoved(c);
-            // TODO: add an animation/effect + award points?
+            game.player.giveUpgrade(a.type);
             return true;
         }
         return false;
@@ -216,7 +216,7 @@ public class BlockGrid implements Entity {
         }
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 
-        for (Block block : blocks) {
+        for (Block block : getBlocks()) {
             block.draw(g);
         }
     }

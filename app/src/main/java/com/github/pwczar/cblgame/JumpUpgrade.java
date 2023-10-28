@@ -1,18 +1,18 @@
 package com.github.pwczar.cblgame;
 
-public class MovespeedUpgrade extends Upgrade {
-    MovespeedUpgrade(Player player) {
+public class JumpUpgrade extends Upgrade {
+    JumpUpgrade(Player player) {
         super(player);
         time = 3;
     }
 
     public void addUpgrade() {
         super.addUpgrade();
-        player.moveSpeed *= 1.1;
+        player.jumpForce *= 1.3;
     }
 
     public void removeUpgrade() {
-        player.moveSpeed /= 1.1;
+        player.jumpForce /= 1.3;
         super.removeUpgrade();
     }
 }
