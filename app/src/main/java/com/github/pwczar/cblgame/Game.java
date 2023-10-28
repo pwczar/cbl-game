@@ -67,8 +67,6 @@ public class Game extends Scene {
 
         addEntity(player);
         addEntity(grid);
-
-        enemyFactory.spawnEnemy();
     }
 
     int getGameWidth() {
@@ -163,6 +161,7 @@ public class Game extends Scene {
     public void run() {
         app.addKeyListener(player);
         grid.startSpawning();
+        enemyFactory.start();
     }
 
     /**
@@ -171,5 +170,6 @@ public class Game extends Scene {
     public void exit() {
         app.removeKeyListener(player);
         grid.stopSpawning();
+        enemyFactory.stop();
     }
 }
