@@ -2,46 +2,53 @@ package com.github.pwczar.cblgame;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class Menu extends Scene {
-    // ImageIcon background = new ImageIcon(getClass().getClassLoader().getResource("AABackground.jpg"));
-    // Image image = background.getImage().getScaledInstance(500, 800, Image.SCALE_SMOOTH);
-    JLabel imageLabel;
-
-    // TODO: Add background behind button
-
     JButton startButton = new JButton("Start game");
     JButton controlsButton = new JButton("Help");
+
+    ArrayList<Pumpkin> pumpkins = new ArrayList<>();
 
     Menu(App app) {
         super(app);
     }
 
     public void draw(Graphics g) {
-        g.clearRect(0, 0, app.getWidth(), app.getHeight());
-        // g.drawImage(image, 0, 0, null);
+        g.setColor(new Color(69, 36, 107));
+        g.fillRect(0, 0, app.getWidth(), app.getHeight());
+
+        for (int i = 0; i < 50; i++) {
+            pumpkins.get(i).draw(g);
+        }
     }
 
     public void update(double delta) {
+        for (int i = 0; i < 50; i++) {
+            pumpkins.get(i).update(delta);
+        }
     }
 
     public void run() {
 
-        startButton.setBackground(new Color(76, 9, 110));
+        for (int i = 0; i < 50; i++) {
+            Pumpkin n = new Pumpkin(this);
+            pumpkins.add(n);
+        }
+
+        startButton.setBackground(Color.BLACK);
         startButton.setForeground(new Color(243, 121, 7));
-        //startButton.setPreferredSize(new Dimension(160, 512));
+        // startButton.setPreferredSize(new Dimension(160, 512));
         startButton.setFont(new Font("", Font.BOLD, 25));
         controlsButton.setFont(new Font("", Font.BOLD, 25));
 
-
-        controlsButton.setBackground(new Color(76, 9, 110));
+        controlsButton.setBackground(Color.BLACK);
         controlsButton.setForeground(new Color(243, 121, 7));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         controlsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 
         add(Box.createRigidArea(new Dimension(10, app.getHeight() / 4)));
         add(startButton);
