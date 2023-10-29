@@ -7,10 +7,12 @@ import javax.swing.*;
 public class Controls extends Scene {
     JButton back = new JButton("BACK");
     JTextArea rules = new JTextArea("Ultimate goal of the game is to keep the witches"
-            + " from reaching the construction site."
-            + " In order to do that, Player has to use blocks to his advantage. Use 'E'"
-            + " to pick up/put down the block. While picked up, use 'F' to throw held block towards"
-            + " approaching witches. Stack of 3 same colored blocks give points,"
+            + " from reaching the construction site. \n"
+            + "In order to do that, Player has to use blocks to his advantage. Use 'WASD' to move,"
+            + " 'SPACE' to jump and 'E'"
+            + " to pick up/put down the block.\n"
+            + "While picked up, use 'F' to throw held block towards"
+            + " approaching witches.\nStack of 3 same colored blocks give points,"
             + " and if a block is of color other than grey, different power ups.");
 
     Controls(App app) {
