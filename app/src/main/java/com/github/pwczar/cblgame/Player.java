@@ -384,8 +384,13 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             this.collideWith(boundary);
         }
 
+        List<Block> sortedBlocks = game.grid.getBlocks();
+        // sort blocks by y
+        // this prevents standing on a block
+        // that has another block above them
+        sortedBlocks.sort((Block a, Block b) -> (int) a.y - (int) b.y);
         // collide with blocks
-        for (Block block : game.grid.getBlocks()) {
+        for (Block block : sortedBlocks) {
             this.collideWith(block);
         }
 

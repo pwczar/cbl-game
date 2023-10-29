@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +43,11 @@ public class BlockGrid implements Entity {
         return grid[0].length;
     }
 
+    /*
+     * Returns a copy of the grid's Block list.
+     */
     public List<Block> getBlocks() {
-        return Collections.unmodifiableList(new ArrayList<>(blocks));
+        return new ArrayList<>(blocks);
     }
 
     public void addBlock() {
