@@ -80,9 +80,7 @@ public class App extends JFrame {
                     double delta = (now - time) / 1000.0;
                     time = now;
 
-                    System.out.println("a");
                     if (app.scene != null) {
-                        System.out.println("b");
                         synchronized (app.scene) {
                             app.scene.update(delta);
                             app.scene.updateUI();
