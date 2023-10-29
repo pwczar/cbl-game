@@ -41,7 +41,7 @@ public class Game extends Scene {
         super(app);
 
         floorOffset = getGameHeight()
-            - (getGameHeight() / Block.SIZE) * Block.SIZE + Block.SIZE * 3;
+            - (getGameHeight() / Block.SIZE) * Block.SIZE + Block.SIZE * 2;
 
         boundaries = new Rectangle2D[] {
             // floor
@@ -71,11 +71,15 @@ public class Game extends Scene {
     }
 
     int getGameWidth() {
-        return (int) (app.getWidth() / SCALE);
+        // constant, not dependent on window width
+        // so that game-play is not affected
+        return Block.SIZE * 10;
     }
 
     int getGameHeight() {
-        return (int) (app.getHeight() / SCALE);
+        // constant, not dependent on window height,
+        // same reason as width
+        return Block.SIZE * 16;
     }
 
     Image loadSprite(String path) {
@@ -139,6 +143,9 @@ public class Game extends Scene {
             ent.draw(bg);
         }
 
+        bg.setColor(new Color(107, 107, 107));
+        bg.fillRect(0, getGameHeight() - floorOffset, getGameWidth(), floorOffset);
+
         player.drawUI(bg);
 
         // set font for UI
@@ -163,9 +170,17 @@ public class Game extends Scene {
              (int) bounds.getHeight()
         );
 
+        g.setColor(new Color(0, 0, 0));
+        g.fillRect(0, 0, app.getWidth(), app.getHeight());
+        int width = (int) (getGameWidth() * SCALE);
+        int height = (int) (getGameHeight() * SCALE);
         g.drawImage(
-            buffer.getScaledInstance(app.getWidth(), app.getHeight(), Image.SCALE_SMOOTH),
-            0, 0, null
+            buffer.getScaledInstance(
+                width,
+                height,
+                Image.SCALE_SMOOTH
+            ),
+            (app.getWidth() - width) / 2, (app.getHeight() - height) / 2, null
         );
 
         lastFrame = buffer;

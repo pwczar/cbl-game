@@ -22,11 +22,10 @@ public class App extends JFrame {
         super(title);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 800);
+        setSize(600, 800);
         // make the window appear at the center of the screen
         setLocationRelativeTo(null);
 
-        setResizable(false);
         setVisible(true);
     }
 
