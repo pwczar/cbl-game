@@ -183,7 +183,7 @@ public class Game extends Scene {
                 height,
                 Image.SCALE_SMOOTH
             ),
-            (app.getWidth() - width) / 2, (app.getHeight() - height) / 2, null
+            (app.getWidth() - width) / 2, 0, null
         );
 
         lastFrame = buffer;
