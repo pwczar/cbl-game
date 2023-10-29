@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -48,6 +49,13 @@ public class Game extends Scene {
             new Rectangle2D.Double(
                 0,
                 getGameHeight() - floorOffset,
+                getGameWidth(),
+                128
+            ),
+            // ceiling
+            new Rectangle2D.Double(
+                0,
+                -128,
                 getGameWidth(),
                 128
             ),
