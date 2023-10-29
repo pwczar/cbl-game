@@ -37,7 +37,7 @@ public class Pumpkin extends Rectangle2D.Double implements Entity {
 
         if (this.y >= menu.app.getHeight()) {
             y = -sprite.getHeight(null);
-            x = rand.nextInt(500);
+            x = rand.nextInt(menu.app.getWidth());
             vy = rand.nextInt(30) + 50;
         }
     }
