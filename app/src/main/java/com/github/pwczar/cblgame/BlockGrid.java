@@ -246,7 +246,7 @@ public class BlockGrid implements Entity {
         for (int col = 0; col < getWidth(); col++) {
             for (int row = 0; row < getHeight(); row++) {
                 if (getBlocks().indexOf(getBlockAt(col, row)) == -1) {
-                    removeBlock(getBlockAt(col, row));
+                    grid[col][row] = null;
                 }
             }
         }
