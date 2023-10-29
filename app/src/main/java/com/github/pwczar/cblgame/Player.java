@@ -171,6 +171,11 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
      * Handle key presses for player controls.
      */
     public void keyPressed(KeyEvent e) {
+        int col = getInteractCol();
+        int row = getInteractRow();
+        // the selected Block
+        Block block = game.grid.getBlockAt(col, row);
+
         if (e.getKeyCode() == (int) 'A') {
             moveLeft = true;
         } else if (e.getKeyCode() == (int) 'D') {
@@ -180,32 +185,27 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
             if (onFloor) {
                 vy = -jumpForce;
             }
-        } else if (e.getKeyCode() == (int) 'E') {
-            int col = getInteractCol();
-            int row = getInteractRow();
-            Block block = game.grid.getBlockAt(col, row);
-
-            if (heldBlock == null
-                && block != null
-                && !(block.state instanceof BlockStateRemoved)) {
-                // pick up a Block
-                heldBlock = block;
-                game.grid.removeBlock(block);
-            } else if (heldBlock != null && block == null
-                       && col >= 0 && col < game.grid.getWidth()
-                       && row >= 0 && row < game.grid.getHeight()) {
-                // place a Block
-                game.grid.putBlockAt(heldBlock, col, row);
-                game.grid.unstackBlockAt(col, row);
-                heldBlock = null;
-            }
-        } else if (e.getKeyCode() == (int) 'F') {
-            // throw a Block if one is held
-            if (heldBlock != null) {
-                heldBlock.state = new BlockStateThrown(heldBlock);
-                game.addEntity(heldBlock);
-                heldBlock = null;
-            }
+        } else if (e.getKeyCode() == (int) 'E'
+                   && heldBlock == null
+                   && block != null
+                   && !(block.state instanceof BlockStateRemoved)) {
+            // pick up a Block
+            heldBlock = block;
+            game.grid.removeBlock(block);
+        } else if (e.getKeyCode() == (int) 'E'
+                   && heldBlock != null && block == null
+                   && col >= 0 && col < game.grid.getWidth()
+                   && row >= 0 && row < game.grid.getHeight()) {
+            // place a Block
+            game.grid.putBlockAt(heldBlock, col, row);
+            game.grid.unstackBlockAt(col, row);
+            heldBlock = null;
+        } else if (e.getKeyCode() == (int) 'F'
+                   && heldBlock != null) {
+            // throw the held Block
+            heldBlock.state = new BlockStateThrown(heldBlock);
+            game.addEntity(heldBlock);
+            heldBlock = null;
         }
     }
 

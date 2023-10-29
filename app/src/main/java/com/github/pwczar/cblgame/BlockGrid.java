@@ -17,6 +17,8 @@ public class BlockGrid implements Entity {
     private List<Block> blocks = new ArrayList<>();
     private Block[][] grid;
     private BlockFactory factory;
+    // map of Blocks, which have been checked for patterns,
+    // this is cleared every time before checking the Blocks
     private Map<Block, Boolean> checkedBlocks = new HashMap<Block, Boolean>();
 
     Image backgroundTile;
@@ -35,10 +37,12 @@ public class BlockGrid implements Entity {
         backgroundTile = game.loadSprite("bricks.png");
     }
 
+    // get column count
     public int getWidth() {
         return grid.length;
     }
 
+    // get row count
     public int getHeight() {
         return grid[0].length;
     }
@@ -89,7 +93,7 @@ public class BlockGrid implements Entity {
     }
 
     /**
-     * Align the given block to the grid at given position and possible add it.
+     * Align the given Block to the grid at given position and possible add it.
      * @param block the block
      * @param col column of grid
      * @param row row of grid
@@ -125,6 +129,7 @@ public class BlockGrid implements Entity {
 
     /**
      * Unalign a Block at the given position from the grid, i. e. make it fall.
+     * Also affect Blocks above it.
      * @param col column
      * @param row row
      */
@@ -160,6 +165,7 @@ public class BlockGrid implements Entity {
             a.state = new BlockStateRemoved(a);
             b.state = new BlockStateRemoved(b);
             c.state = new BlockStateRemoved(c);
+            // the blocks match, award the appropriate upgrade and points
             game.player.giveUpgrade(a.type);
             game.score += 30;
             return true;
@@ -218,6 +224,7 @@ public class BlockGrid implements Entity {
      * @param g the graphics context
      */
     public void draw(Graphics g) {
+        // draw a tiled background
         Graphics2D g2d = (Graphics2D) g;
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         for (int col = 0; col < getWidth(); col++) {

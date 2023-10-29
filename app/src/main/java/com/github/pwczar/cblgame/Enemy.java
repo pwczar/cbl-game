@@ -86,9 +86,12 @@ public class Enemy extends Rectangle2D.Double implements Entity {
             return;
         }
 
+        // update position
         y += delta * vy;
         double yy = y / 20;
+        // move along a sine graph
         x = (game.getGameWidth() - width + 1) * (Math.sin(yy + offset) + 1) * 0.5;
+        // flip if x is decreasing here (the enemy is going left)
         flip = Math.cos(yy + offset) < 0;
     }
 }
