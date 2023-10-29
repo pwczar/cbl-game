@@ -9,7 +9,7 @@ import javax.swing.*;
  */
 public class GameOver extends Scene {
     JButton playAgainButton = new JButton("PLAY AGAIN!");
-    JTextArea statsArea = new JTextArea();
+    JTextPane statsPane = new JTextPane();
     JButton menuButton = new JButton("Back to menu");
 
     Game game;
@@ -32,32 +32,27 @@ public class GameOver extends Scene {
         menuButton.setForeground(new Color(243, 121, 7));
         menuButton.setFont(new Font("", Font.BOLD, 25));
 
-        statsArea.setText(String.format(
-                "You have survived %.2fs and scored %d points",
+        statsPane.setContentType("text/html");
+        statsPane.setText(String.format(
+                "<center style='color: white; font-size: 20px'>"
+                + "<b>You have survived %.2fs and scored %d points</b>"
+                + "</center>",
                 game.gameTime, game.score));
-        statsArea.setEditable(false);
-        statsArea.setFont(new Font("", Font.BOLD, 20));
-        statsArea.setForeground(Color.WHITE);
-        statsArea.setBackground(new Color(0, 0, 0, 0));
-        statsArea.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,
-                (app.getWidth() - (int) (game.getGameWidth() * Game.SCALE)) / 2,
-                0,
-                (app.getWidth() - (int) (game.getGameWidth() * Game.SCALE)) / 2));
-        statsArea.setLineWrap(true);
-        statsArea.setWrapStyleWord(true);
-        statsArea.setMaximumSize(getMaximumSize());
+        statsPane.setEditable(false);
+        statsPane.setBackground(new Color(0, 0, 0, 0));
+        statsPane.setMaximumSize(getMaximumSize());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         playAgainButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        statsArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statsPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         add(Box.createRigidArea(new Dimension(10, app.getHeight() / 4)));
         add(playAgainButton);
         add(Box.createRigidArea(new Dimension(10, 10)));
         add(menuButton);
         add(Box.createRigidArea(new Dimension(10, 10)));
-        add(statsArea);
+        add(statsPane);
     }
 
     /**
@@ -82,10 +77,6 @@ public class GameOver extends Scene {
      * Update the GameOver scene.
      */
     public void update(double delta) {
-        statsArea.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,
-                (app.getWidth() - (int) (game.getGameWidth() * Game.SCALE)) / 2,
-                0,
-                (app.getWidth() - (int) (game.getGameWidth() * Game.SCALE)) / 2));
     }
 
     public void run() {
