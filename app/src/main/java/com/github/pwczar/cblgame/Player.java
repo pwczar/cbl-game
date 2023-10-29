@@ -23,7 +23,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     double moveSpeed = 60;
     double jumpForce = 100;
 
-    double hp = 1;
+    double hp = 5;
 
     List<Upgrade> upgrades = new ArrayList<>();
 
