@@ -237,5 +237,16 @@ public class BlockGrid implements Entity {
         for (Block block : getBlocks()) {
             block.update(delta);
         }
+
+        // make sure there are no untracked blocks on the grid
+        // (can arise from multiple threads messing with the grid
+        // at the same time)
+        for (int col = 0; col < getWidth(); col++) {
+            for (int row = 0; row < getHeight(); row++) {
+                if (getBlocks().indexOf(getBlockAt(col, row)) == -1) {
+                    removeBlock(getBlockAt(col, row));
+                }
+            }
+        }
     }
 }
