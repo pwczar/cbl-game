@@ -38,6 +38,12 @@ java {
     }
 }
 
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "com.github.pwczar.cblgame.App"
+    }
+}
+
 application {
     // Define the main class for the application.
     mainClass.set("com.github.pwczar.cblgame.App")
