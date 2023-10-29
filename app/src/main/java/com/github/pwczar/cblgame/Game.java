@@ -41,7 +41,7 @@ public class Game extends Scene {
         super(app);
 
         floorOffset = getGameHeight()
-            - (getGameHeight() / Block.SIZE) * Block.SIZE + Block.SIZE * 3;
+            - (getGameHeight() / Block.SIZE) * Block.SIZE + Block.SIZE * 2;
 
         boundaries = new Rectangle2D[] {
             // floor
@@ -71,11 +71,15 @@ public class Game extends Scene {
     }
 
     int getGameWidth() {
-        return (int) (app.getWidth() / SCALE);
+        // constant, not dependent on window width
+        // so that game-play is not affected
+        return Block.SIZE * 10;
     }
 
     int getGameHeight() {
-        return (int) (app.getHeight() / SCALE);
+        // constant, not dependent on window height,
+        // same reason as width
+        return Block.SIZE * 16;
     }
 
     Image loadSprite(String path) {
@@ -139,33 +143,47 @@ public class Game extends Scene {
             ent.draw(bg);
         }
 
+        bg.setColor(new Color(107, 107, 107));
+        bg.fillRect(0, getGameHeight() - floorOffset, getGameWidth(), floorOffset);
+
         player.drawUI(bg);
 
-        // set font for UI
+        // set font and color for UI
         bg.setFont(new Font("", Font.PLAIN, 10));
+        bg.setColor(new Color(255, 255, 255));
+
+        // draw score
+        String score_str = Integer.toString(score);
+        Rectangle2D score_bounds = bg.getFont().getStringBounds(
+            score_str, bg.getFontMetrics().getFontRenderContext()
+        );
+        bg.drawString(score_str,
+             (int) (getGameWidth() - score_bounds.getWidth() - 6),
+             (int) score_bounds.getHeight()
+        );
 
         // draw game time
-        bg.setColor(new Color(255, 255, 255));
-        String str = String.format("%.2fs", gameTime);
-        Rectangle2D bounds = bg.getFont().getStringBounds(
-            str, bg.getFontMetrics().getFontRenderContext()
+        String time_str = String.format("%.2fs", gameTime);
+        Rectangle2D time_bounds = bg.getFont().getStringBounds(
+            time_str, bg.getFontMetrics().getFontRenderContext()
         );
         bg.drawString(
-            str,
-            (int) (getGameWidth() - bounds.getWidth() - 6),
-            (int) bounds.getHeight()
+            time_str,
+            (int) (getGameWidth() - time_bounds.getWidth() - 6),
+            (int) time_bounds.getHeight() + (int) score_bounds.getHeight()
         );
 
-        str = Integer.toString(score);
-        bounds = bg.getFont().getStringBounds(str, bg.getFontMetrics().getFontRenderContext());
-        bg.drawString(str,
-             (int) (getGameWidth() / 2 - bounds.getWidth()),
-             (int) bounds.getHeight()
-        );
-
+        g.setColor(new Color(0, 0, 0));
+        g.fillRect(0, 0, app.getWidth(), app.getHeight());
+        int width = (int) (getGameWidth() * SCALE);
+        int height = (int) (getGameHeight() * SCALE);
         g.drawImage(
-            buffer.getScaledInstance(app.getWidth(), app.getHeight(), Image.SCALE_SMOOTH),
-            0, 0, null
+            buffer.getScaledInstance(
+                width,
+                height,
+                Image.SCALE_SMOOTH
+            ),
+            (app.getWidth() - width) / 2, (app.getHeight() - height) / 2, null
         );
 
         lastFrame = buffer;
