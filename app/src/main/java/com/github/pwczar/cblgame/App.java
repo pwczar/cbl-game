@@ -4,6 +4,8 @@
 
 package com.github.pwczar.cblgame;
 
+import java.util.Random;
+
 import javax.swing.JFrame;
 
 /**
@@ -50,7 +52,23 @@ public class App extends JFrame {
     }
 
     public static void main(String[] args) {
-        App app = new App("CBL Game");
+        Random rand = new Random();
+        String[] titles = {
+            "Marcel's highscore is 880 and he is very proud",
+            "JLabel haunts my dreams",
+            "Alt + F4 spawns a secret block",
+            "1 + 1 = 10 (get it?)",
+            "BOO!",
+            "I am your father",
+            "When life gives you blocks...",
+            "There is always more blocks",
+            "IT'S A BLOCK!",
+            "Praise the Block!",
+            "May the Block be with you",
+            "You're gonna need a bigger block",
+        };
+
+        App app = new App(titles[rand.nextInt(titles.length - 1)]);
         app.setScene(new Menu(app));
 
 
