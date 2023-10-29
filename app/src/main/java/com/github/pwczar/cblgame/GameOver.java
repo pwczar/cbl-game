@@ -53,10 +53,17 @@ public class GameOver extends Scene {
      * Draw the last game frame in the background.
      */
     public void draw(Graphics g) {
-        g.clearRect(0, 0, app.getWidth(), app.getHeight());
+        g.setColor(new Color(0, 0, 0));
+        g.fillRect(0, 0, app.getWidth(), app.getHeight());
+        int width = (int) (game.getGameWidth() * Game.SCALE);
+        int height = (int) (game.getGameHeight() * Game.SCALE);
         g.drawImage(
-            game.lastFrame.getScaledInstance(app.getWidth(), app.getHeight(), Image.SCALE_SMOOTH),
-            0, 0, null
+            game.lastFrame.getScaledInstance(
+                width,
+                height,
+                Image.SCALE_SMOOTH
+            ),
+            (app.getWidth() - width) / 2, 0, null
         );
     }
 
