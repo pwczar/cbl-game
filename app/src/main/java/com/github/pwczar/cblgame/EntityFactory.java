@@ -54,9 +54,9 @@ public abstract class EntityFactory {
                     double delay = spawnInterval;
                     try {
                         spawn();
-                        // make the interval 3% smaller every 10 seconds
+                        // make the interval 10% smaller every 10 seconds
                         spawnInterval =
-                            initialSpawnInterval * Math.pow(0.97, (int) (game.gameTime / 10.0));
+                            initialSpawnInterval * Math.pow(0.9, (int) (game.gameTime / 10.0));
                     } catch (ConcurrentModificationException e) {
                         // try again in a moment
                         delay = 0.01;

@@ -11,7 +11,7 @@ public class EnemyFactory extends EntityFactory {
      */
     EnemyFactory(Game game) {
         super(game);
-        spawnInterval = 20;
+        initialSpawnInterval = 4;
     }
 
     /**

@@ -18,7 +18,7 @@ public class BlockFactory extends EntityFactory {
     BlockFactory(Game game, BlockGrid grid) {
         super(game);
         this.grid = grid;
-        spawnInterval = 6;
+        initialSpawnInterval = 2;
         sprites = new Image[] {
             game.loadSprite("bricks_green.png"),
             game.loadSprite("bricks_red.png"),
