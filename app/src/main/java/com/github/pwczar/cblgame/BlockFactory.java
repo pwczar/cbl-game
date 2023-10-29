@@ -1,24 +1,14 @@
 package com.github.pwczar.cblgame;
 
 import java.awt.Image;
-import java.util.ConcurrentModificationException;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * A Block factory.
  */
-public class BlockFactory {
-    final Game game;
+public class BlockFactory extends EntityFactory {
     final BlockGrid grid;
-    Random rand;
 
     Image[] sprites;
-
-    Timer spawnTimer;
-    // time between block-spanws (in seconds)
-    long spawnInterval = 2;
 
     /**
      * Initialize BlockFactory.
@@ -26,10 +16,10 @@ public class BlockFactory {
      * @param grid block grid
      */
     BlockFactory(Game game, BlockGrid grid) {
-        this.game = game;
+        super(game);
         this.grid = grid;
-        this.rand = new Random(System.currentTimeMillis());
-        this.sprites = new Image[] {
+        spawnInterval = 6;
+        sprites = new Image[] {
             game.loadSprite("bricks_green.png"),
             game.loadSprite("bricks_red.png"),
             game.loadSprite("bricks_blue.png"),
@@ -41,7 +31,7 @@ public class BlockFactory {
      * Create a new Block.
      * @return the new block
      */
-    Block createBlock() {
+    Block create() {
         int type = rand.nextInt(4);
         Block block = new Block(
             game,
@@ -58,42 +48,7 @@ public class BlockFactory {
     /**
      * Spawn a new Block.
      */
-    void spawnBlock() {
-        grid.addBlock();
-    }
-
-    /**
-     * Start spawning blocks periodically.
-     */
-    void start() {
-        spawnTimer = new Timer(true);
-        spawnTimer.schedule(new TimerTask() {
-            public void run() {
-                while (true) {
-                    double delay = spawnInterval;
-                    try {
-                        spawnBlock();
-                    } catch (ConcurrentModificationException e) {
-                        // try again in a moment
-                        delay = 0.01;
-                    }
-
-                    try {
-                        Thread.sleep((long) (delay * 1000));
-                    } catch (InterruptedException e) {
-                        return;
-                    }
-                }
-            }
-        }, spawnInterval);
-    }
-
-    /**
-     * Stop periodically spawning blocks.
-     */
-    void stop() {
-        if (spawnTimer != null) {
-            spawnTimer.cancel();
-        }
+    void spawn() {
+        grid.addBlock(create());
     }
 }

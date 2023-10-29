@@ -50,8 +50,13 @@ public class BlockGrid implements Entity {
         return new ArrayList<>(blocks);
     }
 
-    public void addBlock() {
-        blocks.add(factory.createBlock());
+    /**
+     * Add a Block.
+     * @param block block
+     */
+    public void addBlock(Block block) {
+        block.state = new BlockStateFalling(block);
+        blocks.add(block);
     }
 
     /**
