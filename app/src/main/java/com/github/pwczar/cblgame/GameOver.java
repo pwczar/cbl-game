@@ -82,10 +82,6 @@ public class GameOver extends Scene {
      * Update the GameOver scene.
      */
     public void update(double delta) {
-        statsArea.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,
-                (app.getWidth() - (int) (game.getGameWidth() * Game.SCALE)) / 2,
-                0,
-                (app.getWidth() - (int) (game.getGameWidth() * Game.SCALE)) / 2));
     }
 
     public void run() {
