@@ -1,5 +1,9 @@
 package com.github.pwczar.cblgame;
 
+/**
+ * An EnemyFactory.
+ * Creates randomized Enemies and adds them as Entities.
+ */
 public class EnemyFactory extends EntityFactory {
     /**
      * Initialize an EnemyFactory.
