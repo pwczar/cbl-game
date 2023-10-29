@@ -402,7 +402,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
         if (hp <= 0) {
             // die
-            game.app.setScene(new GameOver(game.app, game,  game.gameTime));
+            game.app.setScene(new GameOver(game.app, game));
         }
 
         // update all active upgrades
