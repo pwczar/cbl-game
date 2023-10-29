@@ -26,30 +26,32 @@ public class Controls extends Scene {
         rules.setContentType("text/html");
         rules.setText(
             "<center style='color: white; font-size: 14px;'>"
-            + "The ultimate goal of the game is to keep the witches"
+            + "The ultimate goal of the game is to keep the <b>witches</b>"
             + " from reaching the construction site for as long as possible"
-            + " and earning as many points as you can."
-            + " In order to do that, the <b>player</b> has"
-            + " to use the blocks to his advantage.<br><br>"
-            + "Press <b>E</b> to pick up or place a block."
-            + " While holding a block, press <b>F</b> to throw it"
+            + " and earning as many points as you can. Here's the basics."
+            + "You can move left and right by holding <b>A</b> and <b>D</b>,"
+            + " and you can jump by pressing <b>SPACE</b>.<br><br>"
+            + "In order to survive the longest, you will have"
+            + " to use <b>blocks</b> to your advantage.<br><br>"
+            + "You can pick up or place a block by pressing <b>E</b>."
+            + " While holding a block, you can also press <b>F</b> to throw it"
             + " towards approaching witches.<br><br>"
-            + "Place 3 blocks the same color to earn points and,"
-            + " if the color is different than gray, a power up.<br><br>"
-            + "Finally, hold <b>A</b> and <b>D</b> to move left and right,"
-            + " and press <b>SPACE</b> to jump."
+            + "Place <b>3</b> blocks of the <b>same color</b> to earn points and,"
+            + " if the color is different than gray, gain a power up.<br><br>"
+            + "Finally, don't let the blocks reach the top of the screen.<br><br>"
+            + "<b>Good luck!</b>"
             + "</center>"
         );
         rules.setEditable(false);
         rules.setBackground(new Color(0, 0, 0, 0));
         rules.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        rules.setMaximumSize(new Dimension(500, 400));
+        rules.setMaximumSize(new Dimension(500, app.getHeight() - 100));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         back.setAlignmentX(Component.CENTER_ALIGNMENT);
         rules.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        add(Box.createRigidArea(new Dimension(10, app.getHeight() / 4)));
+        add(Box.createRigidArea(new Dimension(10, 100)));
         add(back);
         add(Box.createRigidArea(new Dimension(10, 10)));
         add(rules);
