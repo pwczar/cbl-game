@@ -148,26 +148,29 @@ public class Game extends Scene {
 
         player.drawUI(bg);
 
-        // set font for UI
+        // set font and color for UI
         bg.setFont(new Font("", Font.PLAIN, 10));
+        bg.setColor(new Color(255, 255, 255));
+
+        // draw score
+        String score_str = Integer.toString(score);
+        Rectangle2D score_bounds = bg.getFont().getStringBounds(
+            score_str, bg.getFontMetrics().getFontRenderContext()
+        );
+        bg.drawString(score_str,
+             (int) (getGameWidth() - score_bounds.getWidth() - 6),
+             (int) score_bounds.getHeight()
+        );
 
         // draw game time
-        bg.setColor(new Color(255, 255, 255));
-        String str = String.format("%.2fs", gameTime);
-        Rectangle2D bounds = bg.getFont().getStringBounds(
-            str, bg.getFontMetrics().getFontRenderContext()
+        String time_str = String.format("%.2fs", gameTime);
+        Rectangle2D time_bounds = bg.getFont().getStringBounds(
+            time_str, bg.getFontMetrics().getFontRenderContext()
         );
         bg.drawString(
-            str,
-            (int) (getGameWidth() - bounds.getWidth() - 6),
-            (int) bounds.getHeight()
-        );
-
-        str = Integer.toString(score);
-        bounds = bg.getFont().getStringBounds(str, bg.getFontMetrics().getFontRenderContext());
-        bg.drawString(str,
-             (int) (getGameWidth() / 2 - bounds.getWidth()),
-             (int) bounds.getHeight()
+            time_str,
+            (int) (getGameWidth() - time_bounds.getWidth() - 6),
+            (int) time_bounds.getHeight() + (int) score_bounds.getHeight()
         );
 
         g.setColor(new Color(0, 0, 0));
