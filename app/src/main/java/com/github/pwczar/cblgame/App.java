@@ -34,15 +34,19 @@ public class App extends JFrame {
      * @param scene scene
      */
     synchronized void setScene(Scene scene) {
-        if (this.scene != null) {
-            this.scene.exit();
-            remove(this.scene);
-        }
+        synchronized (scene) {
+            if (this.scene != null) {
+                synchronized (this.scene) {
+                    this.scene.exit();
+                    remove(this.scene);
+                }
+            }
 
-        this.scene = scene;
-        this.scene.run();
-        this.add(this.scene);
-        requestFocus();
+            scene.run();
+            this.add(scene);
+            this.scene = scene;
+            requestFocus();
+        }
     }
 
     public static void main(String[] args) {
@@ -61,9 +65,11 @@ public class App extends JFrame {
                     time = now;
 
                     if (app.scene != null) {
-                        app.scene.update(delta);
+                        synchronized (app.scene) {
+                            app.scene.update(delta);
+                            app.scene.updateUI();
+                        }
                     }
-                    app.scene.updateUI();
 
                     try {
                         Thread.sleep(app.interval);
