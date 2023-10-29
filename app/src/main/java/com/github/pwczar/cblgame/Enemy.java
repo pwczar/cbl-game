@@ -14,6 +14,7 @@ public class Enemy extends Rectangle2D.Double implements Entity {
     final Game game;
 
     double vy;
+    double offset;
 
     Image sprite;
     boolean flip = false;
@@ -24,13 +25,14 @@ public class Enemy extends Rectangle2D.Double implements Entity {
      * @param x x coordinate
      * @param y y coordinate
      */
-    Enemy(Game game, double x, double y) {
+    Enemy(Game game, double x, double y, double offset) {
         this.game = game;
         vy = 20;
         this.x = x;
         this.y = y;
         height = 12;
         width = 12;
+        this.offset = offset;
         sprite = game.loadSprite("witch.png");
     }
 
@@ -85,7 +87,7 @@ public class Enemy extends Rectangle2D.Double implements Entity {
 
         y += delta * vy;
         double yy = y / 20;
-        x = (game.getGameWidth() - width + 1) * (Math.sin(yy) + 1) * 0.5;
-        flip = Math.cos(yy) < 0;
+        x = (game.getGameWidth() - width + 1) * (Math.sin(yy + offset) + 1) * 0.5;
+        flip = Math.cos(yy + offset) < 0;
     }
 }

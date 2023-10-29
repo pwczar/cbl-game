@@ -19,7 +19,12 @@ public class EnemyFactory {
     }
 
     Enemy createEnemy() {
-        Enemy en = new Enemy(game, rand.nextInt(game.getGameWidth()), 0);
+        Enemy en = new Enemy(
+            game,
+            rand.nextInt(game.getGameWidth()),
+            -24,
+            rand.nextInt(0, 20)
+        );
         return en;
     }
 
