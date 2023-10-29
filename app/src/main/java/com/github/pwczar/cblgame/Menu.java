@@ -5,37 +5,21 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
+/**
+ * A main menu scene.
+ */
 public class Menu extends Scene {
     JButton startButton = new JButton("Start game");
     JButton controlsButton = new JButton("Help");
 
     ArrayList<Pumpkin> pumpkins = new ArrayList<>();
 
+    /**
+     * Initialize a Menu scene.
+     * @param app the app to work under
+     */
     Menu(App app) {
         super(app);
-    }
-
-    public void draw(Graphics g) {
-        g.setColor(new Color(69, 36, 107));
-        g.fillRect(0, 0, app.getWidth(), app.getHeight());
-
-        for (int i = 0; i < 50; i++) {
-            pumpkins.get(i).draw(g);
-        }
-    }
-
-    public void update(double delta) {
-        for (int i = 0; i < 50; i++) {
-            pumpkins.get(i).update(delta);
-        }
-    }
-
-    public void run() {
-
-        for (int i = 0; i < 50; i++) {
-            Pumpkin n = new Pumpkin(this);
-            pumpkins.add(n);
-        }
 
         startButton.setBackground(Color.BLACK);
         startButton.setForeground(new Color(243, 121, 7));
@@ -54,6 +38,35 @@ public class Menu extends Scene {
         add(startButton);
         add(Box.createRigidArea(new Dimension(10, 10)));
         add(controlsButton);
+
+    }
+
+    /**
+     * Draw background pumpkins.
+     */
+    public void draw(Graphics g) {
+        g.setColor(new Color(69, 36, 107));
+        g.fillRect(0, 0, app.getWidth(), app.getHeight());
+
+        for (Pumpkin pum : pumpkins) {
+            pum.draw(g);
+        }
+    }
+
+    /**
+     * Update the Menu (background pumpkins).
+     */
+    public void update(double delta) {
+        for (Pumpkin pum : pumpkins) {
+            pum.update(delta);
+        }
+    }
+
+    public void run() {
+        for (int i = 0; i < 50; i++) {
+            Pumpkin n = new Pumpkin(this);
+            pumpkins.add(n);
+        }
 
         startButton.addActionListener(new ActionListener() {
             @Override

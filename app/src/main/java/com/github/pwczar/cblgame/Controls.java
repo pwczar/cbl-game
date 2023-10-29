@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * A scene explaining the game controls and mechanics.
+ */
 public class Controls extends Scene {
     JButton back = new JButton("BACK");
     JTextArea rules = new JTextArea("Ultimate goal of the game is to keep the witches"
@@ -13,16 +16,14 @@ public class Controls extends Scene {
             + " approaching witches. Stack of 3 same colored blocks give points,"
             + " and if a block is of color other than grey, different power ups.");
 
+
+    /**
+     * Initialize a Controls scene.
+     * @param app the app to work under
+     */
     Controls(App app) {
         super(app);
-    }
 
-    public void draw(Graphics g) {
-        g.setColor(new Color(69, 36, 107));
-        g.fillRect(0, 0, app.getWidth(), app.getHeight());
-    }
-
-    public void run() {
         back.setBackground(Color.BLACK);
         back.setForeground(new Color(243, 121, 7));
         back.setFont(new Font("", Font.BOLD, 25));
@@ -44,7 +45,17 @@ public class Controls extends Scene {
         add(Box.createRigidArea(new Dimension(10, 10)));
         rules.setEditable(false);
         add(rules);
+    }
 
+    /**
+     * Draw a solid background.
+     */
+    public void draw(Graphics g) {
+        g.setColor(new Color(69, 36, 107));
+        g.fillRect(0, 0, app.getWidth(), app.getHeight());
+    }
+
+    public void run() {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
