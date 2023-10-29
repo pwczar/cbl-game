@@ -26,6 +26,7 @@ public class App extends JFrame {
         // make the window appear at the center of the screen
         setLocationRelativeTo(null);
 
+        setResizable(false);
         setVisible(true);
     }
 

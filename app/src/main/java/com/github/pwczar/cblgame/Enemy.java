@@ -65,6 +65,7 @@ public class Enemy extends Rectangle2D.Double implements Entity {
                 && ((Block) ent).intersects(this)) {
                 game.removeEntity((Block) ent);
                 game.removeEntity(this);
+                game.score += 10;
                 return;
             }
         }
