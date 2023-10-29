@@ -9,11 +9,11 @@ public class JumpUpgrade extends Upgrade {
 
     public void addUpgrade() {
         super.addUpgrade();
-        player.jumpForce *= 1.3;
+        player.jumpForce *= 1.7;
     }
 
     public void removeUpgrade() {
-        player.jumpForce /= 1.3;
+        player.jumpForce /= 1.7;
         super.removeUpgrade();
     }
 }
