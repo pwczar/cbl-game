@@ -35,6 +35,7 @@ public class GameOver extends Scene {
         statsArea.setText(String.format(
                 "You have survived %.2fs and scored %d points",
                 game.gameTime, game.score));
+        statsArea.setEditable(false);
         statsArea.setFont(new Font("", Font.BOLD, 20));
         statsArea.setForeground(Color.WHITE);
         statsArea.setBackground(new Color(0, 0, 0, 0));
