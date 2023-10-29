@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ public class Game extends Scene {
     double gameTime = 0;
     int score = 0;
 
-    // TODO: rewrite as a class implementing Entity
     Rectangle2D[] boundaries;
     Rectangle2D floor;
     final int floorOffset;
@@ -133,6 +131,7 @@ public class Game extends Scene {
      * @param g graphics context
      */
     public void draw(Graphics g) {
+        // create a smaller buffer for the game
         Image buffer = new BufferedImage(
             getGameWidth(),
             getGameHeight(),
@@ -165,6 +164,9 @@ public class Game extends Scene {
         player.drawUI(bg);
 
         // set font and color for UI
+        // we draw to bg instead of g,
+        // so that the text is pixelated
+        // without additional effort
         bg.setFont(new Font("", Font.PLAIN, 10));
         bg.setColor(new Color(255, 255, 255));
 
@@ -189,6 +191,7 @@ public class Game extends Scene {
             (int) timeBounds.getHeight() + (int) scoreBounds.getHeight()
         );
 
+        // draw the buffer
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, app.getWidth(), app.getHeight());
         int width = (int) (getGameWidth() * SCALE);
