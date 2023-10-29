@@ -70,12 +70,20 @@ public class Game extends Scene {
         addEntity(grid);
     }
 
+    /**
+     * Obtain game width.
+     * @return game width
+     */
     int getGameWidth() {
         // constant, not dependent on window width
         // so that game-play is not affected
         return Block.SIZE * 10;
     }
 
+    /**
+     * Obtain game height.
+     * @return game height
+     */
     int getGameHeight() {
         // constant, not dependent on window height,
         // same reason as width
@@ -153,24 +161,24 @@ public class Game extends Scene {
         bg.setColor(new Color(255, 255, 255));
 
         // draw score
-        String score_str = Integer.toString(score);
-        Rectangle2D score_bounds = bg.getFont().getStringBounds(
-            score_str, bg.getFontMetrics().getFontRenderContext()
+        String scoreStr = Integer.toString(score);
+        Rectangle2D scoreBounds = bg.getFont().getStringBounds(
+            scoreStr, bg.getFontMetrics().getFontRenderContext()
         );
-        bg.drawString(score_str,
-             (int) (getGameWidth() - score_bounds.getWidth() - 6),
-             (int) score_bounds.getHeight()
+        bg.drawString(scoreStr,
+             (int) (getGameWidth() - scoreBounds.getWidth() - 6),
+             (int) scoreBounds.getHeight()
         );
 
         // draw game time
-        String time_str = String.format("%.2fs", gameTime);
-        Rectangle2D time_bounds = bg.getFont().getStringBounds(
-            time_str, bg.getFontMetrics().getFontRenderContext()
+        String timeStr = String.format("%.2fs", gameTime);
+        Rectangle2D timeBounds = bg.getFont().getStringBounds(
+            timeStr, bg.getFontMetrics().getFontRenderContext()
         );
         bg.drawString(
-            time_str,
-            (int) (getGameWidth() - time_bounds.getWidth() - 6),
-            (int) time_bounds.getHeight() + (int) score_bounds.getHeight()
+            timeStr,
+            (int) (getGameWidth() - timeBounds.getWidth() - 6),
+            (int) timeBounds.getHeight() + (int) scoreBounds.getHeight()
         );
 
         g.setColor(new Color(0, 0, 0));

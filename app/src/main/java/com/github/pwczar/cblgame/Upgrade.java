@@ -2,6 +2,9 @@ package com.github.pwczar.cblgame;
 
 import java.awt.Image;
 
+/**
+ * Main class of Upgrades.
+ */
 public abstract class Upgrade {
     final Player player;
     double time = 0;
@@ -19,6 +22,10 @@ public abstract class Upgrade {
         player.upgrades.remove(this);
     }
 
+    /**
+     * Updating upgrade uptime.
+     * @param delta time in seconds
+     */
     void update(double delta) {
         time -= delta;
         if (time <= 0) {
