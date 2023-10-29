@@ -7,7 +7,7 @@ import java.util.Random;
 import javax.swing.*;
 
 /**
- * Main class of pumpkin entity.
+ * A falling Pumpkin.
  */
 public class Pumpkin extends Rectangle2D.Double implements Entity {
 
@@ -20,8 +20,8 @@ public class Pumpkin extends Rectangle2D.Double implements Entity {
     Image sprite;
 
     /**
-     * Initialize.
-     * @param menu scene which will have pumpkins.
+     * Initialize a Pumpkin.
+     * @param menu the Pumpkin's scene
      */
     Pumpkin(Menu menu) {
         this.menu = menu;
@@ -40,7 +40,7 @@ public class Pumpkin extends Rectangle2D.Double implements Entity {
     }
 
     /**
-     * Update pumpkins' position.
+     * Update the pumpkin's position.
      */
     public void update(double delta) {
         y += vy * delta;

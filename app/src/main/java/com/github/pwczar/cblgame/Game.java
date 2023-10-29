@@ -34,7 +34,7 @@ public class Game extends Scene {
     EnemyFactory enemyFactory = new EnemyFactory(this);
 
     /**
-     * Initialize.
+     * Initialize a game scene.
      * @param app the app to run under
      */
     Game(App app) {
