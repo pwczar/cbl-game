@@ -138,6 +138,18 @@ public class Game extends Scene {
 
         player.drawUI(bg);
 
+        // draw game time
+        bg.setColor(new Color(255, 255, 255));
+        String str = String.format("%.2fs", gameTime);
+        Rectangle2D bounds = bg.getFont().getStringBounds(
+            str, bg.getFontMetrics().getFontRenderContext()
+        );
+        bg.drawString(
+            str,
+            (int) (getGameWidth() - bounds.getWidth() - 4),
+            (int) bounds.getHeight()
+        );
+
         g.drawImage(
             buffer.getScaledInstance(app.getWidth(), app.getHeight(), Image.SCALE_SMOOTH),
             0, 0, null
