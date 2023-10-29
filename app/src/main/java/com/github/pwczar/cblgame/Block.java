@@ -49,7 +49,7 @@ public class Block extends Rectangle2D.Double implements Entity {
         while (grid.getBlockAt(col, row) != null) {
             row--;
             if (row < 0) {
-                // TODO: game over?
+                game.app.setScene(new GameOver(game.app, game));
                 return;
             }
         }
