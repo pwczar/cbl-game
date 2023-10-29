@@ -1,6 +1,7 @@
 package com.github.pwczar.cblgame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
@@ -20,11 +21,13 @@ public class Game extends Scene {
 
     Player player;
     double gameTime = 0;
+    int score = 0;
 
     // TODO: rewrite as a class implementing Entity
     Rectangle2D[] boundaries;
     Rectangle2D floor;
     final int floorOffset;
+    Image lastFrame;
 
     BlockGrid grid;
 
@@ -138,6 +141,9 @@ public class Game extends Scene {
 
         player.drawUI(bg);
 
+        // set font for UI
+        bg.setFont(new Font("", Font.PLAIN, 10));
+
         // draw game time
         bg.setColor(new Color(255, 255, 255));
         String str = String.format("%.2fs", gameTime);
@@ -146,14 +152,23 @@ public class Game extends Scene {
         );
         bg.drawString(
             str,
-            (int) (getGameWidth() - bounds.getWidth() - 4),
+            (int) (getGameWidth() - bounds.getWidth() - 6),
             (int) bounds.getHeight()
+        );
+
+        str = Integer.toString(score);
+        bounds = bg.getFont().getStringBounds(str, bg.getFontMetrics().getFontRenderContext());
+        bg.drawString(str,
+             (int) (getGameWidth() / 2 - bounds.getWidth()),
+             (int) bounds.getHeight()
         );
 
         g.drawImage(
             buffer.getScaledInstance(app.getWidth(), app.getHeight(), Image.SCALE_SMOOTH),
             0, 0, null
         );
+
+        lastFrame = buffer;
     }
 
     /**

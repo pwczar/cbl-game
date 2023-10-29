@@ -23,7 +23,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
     double moveSpeed = 60;
     double jumpForce = 100;
 
-    double hp = 5;
+    double hp = 1;
 
     List<Upgrade> upgrades = new ArrayList<>();
 
@@ -402,7 +402,7 @@ public class Player extends Rectangle2D.Double implements Entity, KeyListener {
 
         if (hp <= 0) {
             // die
-            game.app.setScene(new GameOver(game.app, game.gameTime));
+            game.app.setScene(new GameOver(game.app, game,  game.gameTime));
         }
 
         // update all active upgrades

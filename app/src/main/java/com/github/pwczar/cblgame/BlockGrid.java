@@ -156,6 +156,7 @@ public class BlockGrid implements Entity {
             b.state = new BlockStateRemoved(b);
             c.state = new BlockStateRemoved(c);
             game.player.giveUpgrade(a.type);
+            game.score += 30;
             return true;
         }
         return false;
