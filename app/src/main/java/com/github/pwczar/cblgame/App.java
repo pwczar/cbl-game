@@ -5,7 +5,6 @@
 package com.github.pwczar.cblgame;
 
 import java.util.Random;
-
 import javax.swing.JFrame;
 
 /**
@@ -35,7 +34,7 @@ public class App extends JFrame {
      * Change current scene.
      * @param scene scene
      */
-    synchronized void setScene(Scene scene) {
+    void setScene(Scene scene) {
         synchronized (scene) {
             if (this.scene != null) {
                 synchronized (this.scene) {
@@ -71,7 +70,6 @@ public class App extends JFrame {
         App app = new App(titles[rand.nextInt(titles.length - 1)]);
         app.setScene(new Menu(app));
 
-
         // periodically update the scene in another thread
         new Thread() {
             public void run() {
@@ -82,7 +80,9 @@ public class App extends JFrame {
                     double delta = (now - time) / 1000.0;
                     time = now;
 
+                    System.out.println("a");
                     if (app.scene != null) {
+                        System.out.println("b");
                         synchronized (app.scene) {
                             app.scene.update(delta);
                             app.scene.updateUI();
