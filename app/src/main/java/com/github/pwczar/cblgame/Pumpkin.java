@@ -6,6 +6,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 import javax.swing.*;
 
+/**
+ * Main class of pumpkin entity.
+ */
 public class Pumpkin extends Rectangle2D.Double implements Entity {
 
     static Random rand = new Random(System.currentTimeMillis());
@@ -16,6 +19,10 @@ public class Pumpkin extends Rectangle2D.Double implements Entity {
 
     Image sprite;
 
+    /**
+     * Initialize.
+     * @param menu scene which will have pumpkins.
+     */
     Pumpkin(Menu menu) {
         this.menu = menu;
         vy = rand.nextInt(30) + 50;;
@@ -32,6 +39,9 @@ public class Pumpkin extends Rectangle2D.Double implements Entity {
         g.drawImage(sprite, (int) x, (int) y, null);
     }
 
+    /**
+     * Update pumpkins' position.
+     */
     public void update(double delta) {
         y += vy * delta;
 
